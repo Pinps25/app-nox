@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>Nox</title>
+
+<meta name="theme-color" content="#25262B">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%2325262B'/%3E%3Cpath d='M170 350 V162 L342 350 V162' fill='none' stroke='%23D0BCFF' stroke-width='52' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='342' cy='162' r='26' fill='%23D0BCFF'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%2325262B'/%3E%3Cpath d='M170 350 V162 L342 350 V162' fill='none' stroke='%23D0BCFF' stroke-width='52' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='342' cy='162' r='26' fill='%23D0BCFF'/%3E%3C/svg%3E">
+  
+  <style>
+  /* ══════════════════════════════════════════════════════════════════
+     GHOST PAD — MERGED: V5 Design (Material You MD3) + V4 Security Engine
+     "O cérebro do V4 no corpo do V5"
+     CORES: Arquitetura híbrida V5 intacta — injectAndroidDynamicColors()
+     SEGURANÇA: Motor V4 intocado — AES-256-GCM + PBKDF2-SHA256 (310k)
+  ══════════════════════════════════════════════════════════════════ */
+
+  /* ══════════════════════════════════════════════════════════════════
+     NOX — MD3 TOKENS — ELEVATED DARK (paleta base permanente)
+     Fundo: #25262B · Cards: #32353B · Accent: #D0BCFF / #A8C7FA
+  ══════════════════════════════════════════════════════════════════ */
+  :root {
+    /* Accent */
+    --md-sys-color-primary:#D0BCFF;          --md-sys-color-on-primary:#381E72;
+    --md-sys-color-primary-container:#4F378B;--md-sys-color-on-primary-container:#EADDFF;
+    --md-sys-color-secondary:#A8C7FA;        --md-sys-color-on-secondary:#1A3560;
+    --md-sys-color-secondary-container:#2A4579;--md-sys-color-on-secondary-container:#D3E4FF;
+    --md-sys-color-tertiary:#EFB8C8;         --md-sys-color-on-tertiary:#492532;
+    --md-sys-color-tertiary-container:#633B48;--md-sys-color-on-tertiary-container:#FFD8E4;
+    /* Error */
+    --md-sys-color-error:#F2B8B5;            --md-sys-color-on-error:#601410;
+    --md-sys-color-error-container:#8C1D18;  --md-sys-color-on-error-container:#F9DEDC;
+    /* Backgrounds — Elevated Dark */
+    --md-sys-color-background:#25262B;       --md-sys-color-on-background:#E4E2E6;
+    --md-sys-color-surface:#25262B;          --md-sys-color-on-surface:#E4E2E6;
+    --md-sys-color-surface-variant:#46434A;  --md-sys-color-on-surface-variant:#C9C5D0;
+    /* Outlines */
+    --md-sys-color-outline:#938F99;          --md-sys-color-outline-variant:#46434A;
+    /* Inverse */
+    --md-sys-color-inverse-surface:#E4E2E6;  --md-sys-color-inverse-on-surface:#312F36;
+    --md-sys-color-inverse-primary:#6750A4;
+    /* Surface containers — escalonados */
+    --md-sys-color-surface-container-lowest:#1C1B1F;
+    --md-sys-color-surface-container-low:#25262B;
+    --md-sys-color-surface-container:#32353B;
+    --md-sys-color-surface-container-high:#3A3D44;
+    --md-sys-color-surface-container-highest:#44474E;
+    /* Shape — MD3 rounded + Nox extra */
+    --md-sys-shape-extra-small:4px;  --md-sys-shape-small:8px;  --md-sys-shape-medium:12px;
+    --md-sys-shape-large:16px;       --md-sys-shape-extra-large:24px; --md-sys-shape-full:9999px;
+    /* Motion */
+    --md-sys-motion-duration-short1:50ms;  --md-sys-motion-duration-short2:100ms;
+    --md-sys-motion-duration-short3:150ms; --md-sys-motion-duration-short4:200ms;
+    --md-sys-motion-duration-medium1:250ms;--md-sys-motion-duration-medium2:300ms;
+    --md-sys-motion-duration-long1:350ms;  --md-sys-motion-duration-long2:400ms;
+    --md-sys-motion-easing-standard:cubic-bezier(.2,0,0,1);
+    --md-sys-motion-easing-decelerate:cubic-bezier(0,0,0,1);
+    --md-sys-motion-easing-accelerate:cubic-bezier(.3,0,1,1);
+    /* Nox always-dark */
+    color-scheme:dark;
+    /* Fontes fallback sem dependência externa */
+    --nox-font-display:'Nunito',ui-rounded,system-ui,sans-serif;
+    --nox-font-body:'Nunito Sans',ui-sans-serif,system-ui,sans-serif;
+  }
+  /* Tema claro opcional via toggle de settings (backward-compat) */
+  [data-theme="light"] {
+    --md-sys-color-primary:#6750A4;          --md-sys-color-on-primary:#FFFFFF;
+    --md-sys-color-primary-container:#EADDFF;--md-sys-color-on-primary-container:#21005D;
+    --md-sys-color-secondary:#625B71;        --md-sys-color-on-secondary:#FFFFFF;
+    --md-sys-color-secondary-container:#E8DEF8;--md-sys-color-on-secondary-container:#1D192B;
+    --md-sys-color-tertiary:#7D5260;         --md-sys-color-on-tertiary:#FFFFFF;
+    --md-sys-color-tertiary-container:#FFD8E4;--md-sys-color-on-tertiary-container:#31111D;
+    --md-sys-color-error:#B3261E;            --md-sys-color-on-error:#FFFFFF;
+    --md-sys-color-error-container:#F9DEDC;  --md-sys-color-on-error-container:#410E0B;
+    --md-sys-color-background:#FFFBFE;       --md-sys-color-on-background:#1C1B1F;
+    --md-sys-color-surface:#FFFBFE;          --md-sys-color-on-surface:#1C1B1F;
+    --md-sys-color-surface-variant:#E7E0EC;  --md-sys-color-on-surface-variant:#49454F;
+    --md-sys-color-outline:#79747E;          --md-sys-color-outline-variant:#CAC4D0;
+    --md-sys-color-inverse-surface:#313033;  --md-sys-color-inverse-on-surface:#F4EFF4;
+    --md-sys-color-inverse-primary:#D0BCFF;
+    --md-sys-color-surface-container-lowest:#FFFFFF;
+    --md-sys-color-surface-container-low:#F7F2FA;
+    --md-sys-color-surface-container:#F3EDF7;
+    --md-sys-color-surface-container-high:#ECE6F0;
+    --md-sys-color-surface-container-highest:#E6E0E9;
+    color-scheme:light;
+  }
+
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;background:var(--md-sys-color-background);color:var(--md-sys-color-on-background);
+    font-family:var(--nox-font-body),'Nunito Sans',system-ui,sans-serif;font-size:16px;line-height:1.5;
+    overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+  /* ─── SISTEMA DE TELAS (V5 — intacto) ─── */
+  .screen{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;
+    transition:opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard),
+    transform var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-decelerate);will-change:opacity,transform;}
+  .screen.active{opacity:1;pointer-events:all;}
+
+  /* ─── TELA DE AUTENTICAÇÃO (V5 design) ─── */
+  #screen-auth{background:var(--md-sys-color-surface);align-items:center;justify-content:center;padding:24px;z-index:10;}
+  #screen-auth.slide-up-exit{transform:translateY(-48px);opacity:0;}
+  .auth-container{width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;}
+  .auth-icon-wrap{width:88px;height:88px;border-radius:var(--md-sys-shape-full);background:var(--md-sys-color-primary-container);
+    display:flex;align-items:center;justify-content:center;margin-bottom:28px;animation:float 5s ease-in-out infinite;cursor:pointer;}
+  .auth-icon-wrap svg{width:48px;height:48px;fill:var(--md-sys-color-on-primary-container);}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .auth-title{font-family:'Nunito',system-ui,sans-serif;font-size:34px;font-weight:700;color:var(--md-sys-color-on-surface);
+    letter-spacing:-0.5px;margin-bottom:8px;text-align:center;}
+  .auth-subtitle{font-size:14px;color:var(--md-sys-color-on-surface-variant);margin-bottom:44px;text-align:center;}
+  .md3-outlined-field{width:100%;position:relative;margin-bottom:8px;}
+  .md3-outlined-field input{width:100%;background:transparent;border:1px solid var(--md-sys-color-outline);
+    border-radius:var(--md-sys-shape-extra-small);color:var(--md-sys-color-on-surface);
+    font-family:'Nunito Sans',system-ui,sans-serif;font-size:16px;padding:16px 52px 16px 16px;outline:none;
+    -webkit-user-select:auto;user-select:auto;transition:border-color .2s,border-width .2s;}
+  .md3-outlined-field input:focus{border-color:var(--md-sys-color-primary);border-width:2px;}
+  .md3-outlined-field input.field-error{border-color:var(--md-sys-color-error)!important;border-width:2px!important;
+    animation:shake .42s cubic-bezier(.36,.07,.19,.97) both;}
+  @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+  .md3-outlined-field label{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:var(--md-sys-color-surface);
+    padding:0 4px;font-family:'Nunito Sans',system-ui,sans-serif;font-size:16px;color:var(--md-sys-color-on-surface-variant);
+    pointer-events:none;transition:all .2s;line-height:1;}
+  .md3-outlined-field input:focus~label,.md3-outlined-field input:not(:placeholder-shown)~label{top:0;font-size:12px;color:var(--md-sys-color-primary);}
+  .md3-outlined-field input.field-error~label{color:var(--md-sys-color-error);}
+  .md3-field-trailing{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:40px;height:40px;
+    border-radius:var(--md-sys-shape-full);border:none;background:transparent;color:var(--md-sys-color-on-surface-variant);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s;}
+  .md3-field-trailing:hover{background:color-mix(in srgb,var(--md-sys-color-on-surface) 8%,transparent);}
+  .md3-field-supporting{font-size:12px;padding:4px 16px 0;min-height:20px;display:block;color:var(--md-sys-color-error);}
+  .md3-btn-filled{width:100%;height:40px;background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary);
+    border:none;border-radius:var(--md-sys-shape-full);font-family:'Nunito',system-ui,sans-serif;font-size:14px;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;margin-top:16px;
+    transition:box-shadow .2s,transform .1s;}
+  .md3-btn-filled::before{content:'';position:absolute;inset:0;background:var(--md-sys-color-on-primary);opacity:0;transition:opacity .1s;}
+  .md3-btn-filled:hover{box-shadow:0 1px 2px rgba(0,0,0,.3),0 2px 6px 2px rgba(0,0,0,.15);}
+  .md3-btn-filled:hover::before{opacity:.08;}
+  .md3-btn-filled:active{box-shadow:none;transform:scale(.98);}
+  .md3-btn-filled:active::before{opacity:.12;}
+  .md3-btn-filled:disabled{opacity:.5;cursor:not-allowed;}
+  .auth-mode-toggle{margin-top:16px;font-size:13px;color:var(--md-sys-color-primary);cursor:pointer;text-align:center;transition:opacity .2s;}
+  .auth-mode-toggle:hover{opacity:.7;}
+  .auth-footer{margin-top:32px;font-size:11px;color:var(--md-sys-color-on-surface-variant);text-align:center;opacity:.45;letter-spacing:.3px;line-height:1.9;}
+  #auth-recovery-link{margin-top:20px;font-size:10px;color:var(--md-sys-color-error);opacity:.3;cursor:pointer;text-align:center;transition:opacity .2s;}
+  #auth-recovery-link:hover{opacity:.9;}
+
+  /* ─── VAULT SCREEN ─── */
+  #screen-vault{background:var(--md-sys-color-background);z-index:5;transform:translateY(20px);}
+  #screen-vault.active{transform:translateY(0);}
+  /* NOX: glassmorphism header — backdrop-filter blur(10px) */
+  .top-app-bar{height:64px;
+    background:rgba(37,38,43,0.72);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    display:flex;align-items:center;
+    padding:0 4px 0 16px;gap:4px;flex-shrink:0;transition:box-shadow .2s,background .3s;}
+  .top-app-bar.scrolled{box-shadow:0 2px 16px rgba(0,0,0,.32);background:rgba(37,38,43,0.92);}
+  [data-theme="light"] .top-app-bar{background:rgba(247,242,250,0.82);border-bottom:1px solid rgba(0,0,0,0.07);}
+  [data-theme="light"] .top-app-bar.scrolled{background:rgba(247,242,250,0.96);}
+
+  /* NOX: Auto-Lock blur overlay — aplicado via body.app-blurred */
+  body.app-blurred::after{
+    content:'';position:fixed;inset:0;z-index:9998;
+    backdrop-filter:blur(24px) brightness(0.35) saturate(0.6);
+    -webkit-backdrop-filter:blur(24px) brightness(0.35) saturate(0.6);
+    pointer-events:all;
+    background:rgba(13,13,18,0.55);
+    transition:backdrop-filter .4s, background .4s;
+  }
+  .top-app-bar-title{font-family:'Nunito',system-ui,sans-serif;font-size:22px;font-weight:700;
+    color:var(--md-sys-color-on-surface);flex:1;letter-spacing:-0.3px;}
+  .icon-btn{width:48px;height:48px;border-radius:var(--md-sys-shape-full);border:none;background:transparent;
+    color:var(--md-sys-color-on-surface-variant);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;transition:background .1s;flex-shrink:0;}
+  .icon-btn::before{content:'';position:absolute;inset:0;border-radius:inherit;background:currentColor;opacity:0;transition:opacity .1s;}
+  .icon-btn:hover::before{opacity:.08;}
+  .icon-btn:active::before{opacity:.12;}
+  .icon-btn svg{pointer-events:none;position:relative;z-index:1;}
+  .icon-btn.active-state{color:var(--md-sys-color-primary);}
+  .search-container{padding:8px 16px 4px;flex-shrink:0;}
+  .search-bar{background:var(--md-sys-color-surface-container-highest);border-radius:var(--md-sys-shape-full);
+    height:48px;display:flex;align-items:center;padding:0 8px 0 16px;gap:8px;}
+  .search-bar svg{color:var(--md-sys-color-on-surface-variant);flex-shrink:0;}
+  #search-input{flex:1;background:transparent;border:none;outline:none;font-family:'Nunito Sans',system-ui,sans-serif;
+    font-size:16px;color:var(--md-sys-color-on-surface);-webkit-user-select:auto;user-select:auto;}
+  #search-input::placeholder{color:var(--md-sys-color-on-surface-variant);}
+  #search-clear{display:none;color:var(--md-sys-color-on-surface-variant);width:36px;height:36px;}
+  .vault-tabs{display:flex;padding:4px 12px 8px;flex-shrink:0;}
+  .vault-tab{flex:1;height:36px;border:none;border-radius:var(--md-sys-shape-full);background:transparent;
+    color:var(--md-sys-color-on-surface-variant);font-family:'Nunito',system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s,color .2s;}
+  .vault-tab.active{background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container);}
+  .vault-tab:not(.active):hover{background:color-mix(in srgb,var(--md-sys-color-on-surface) 8%,transparent);}
+  .vault-scroll{flex:1;overflow-y:auto;padding:4px 12px 100px;scrollbar-width:thin;scrollbar-color:var(--md-sys-color-outline-variant) transparent;}
+  .vault-scroll::-webkit-scrollbar{width:4px;}
+  .vault-scroll::-webkit-scrollbar-thumb{background:var(--md-sys-color-outline-variant);border-radius:2px;}
+  .notes-grid{columns:2;column-gap:8px;}
+  @media(min-width:600px){.notes-grid{columns:3;}}
+  @media(min-width:900px){.notes-grid{columns:4;}}
+  @media(max-width:340px){.notes-grid{columns:1;}}
+  .note-card{break-inside:avoid;margin-bottom:8px;background:var(--md-sys-color-surface-container);
+    border-radius:var(--md-sys-shape-extra-large);padding:16px;cursor:pointer;position:relative;overflow:hidden;
+    border:1px solid transparent;
+    transition:box-shadow .2s,border-color .2s,transform .15s;
+    animation:card-in .25s cubic-bezier(0,0,0,1) both;}
+  .note-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:var(--md-sys-color-on-surface);opacity:0;transition:opacity .1s;pointer-events:none;}
+  .note-card:hover{box-shadow:0 1px 3px rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.12);}
+  .note-card:hover::before{opacity:.06;}
+  .note-card:active{transform:scale(.98);}
+  .note-card:active::before{opacity:.12;}
+  .note-card.deleted-card{opacity:.72;}
+  @keyframes card-in{from{opacity:0;transform:scale(.94) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .note-card[data-color="rose"]{background:#F8D7D7;} .note-card[data-color="amber"]{background:#FEF2C6;}
+  .note-card[data-color="sage"]{background:#D3EDD5;} .note-card[data-color="sky"]{background:#D0E8F7;}
+  .note-card[data-color="iris"]{background:#E4D8F8;} .note-card[data-color="sand"]{background:#F2E8D0;}
+  @media(prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .note-card[data-color="rose"]{background:#5C2121;}
+    :root:not([data-theme="light"]) .note-card[data-color="amber"]{background:#4A3800;}
+    :root:not([data-theme="light"]) .note-card[data-color="sage"]{background:#143318;}
+    :root:not([data-theme="light"]) .note-card[data-color="sky"]{background:#0E2D40;}
+    :root:not([data-theme="light"]) .note-card[data-color="iris"]{background:#2A1B5E;}
+    :root:not([data-theme="light"]) .note-card[data-color="sand"]{background:#3A2C0A;}
+  }
+  [data-theme="dark"] .note-card[data-color="rose"]{background:#5C2121;}
+  [data-theme="dark"] .note-card[data-color="amber"]{background:#4A3800;}
+  [data-theme="dark"] .note-card[data-color="sage"]{background:#143318;}
+  [data-theme="dark"] .note-card[data-color="sky"]{background:#0E2D40;}
+  [data-theme="dark"] .note-card[data-color="iris"]{background:#2A1B5E;}
+  [data-theme="dark"] .note-card[data-color="sand"]{background:#3A2C0A;}
+  .note-card-title{font-family:'Nunito',system-ui,sans-serif;font-size:14px;font-weight:700;color:var(--md-sys-color-on-surface);
+    margin-bottom:6px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;line-height:1.4;position:relative;z-index:1;}
+  .note-card-preview{font-size:13px;color:var(--md-sys-color-on-surface-variant);overflow:hidden;display:-webkit-box;
+    -webkit-line-clamp:7;-webkit-box-orient:vertical;line-height:1.7;margin-bottom:10px;position:relative;z-index:1;}
+  .note-card-footer{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;gap:4px;}
+  .note-card-footer-left{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0;}
+  .note-card-date{font-size:11px;color:var(--md-sys-color-on-surface-variant);opacity:.65;font-weight:500;flex-shrink:0;}
+  .ttl-badge{font-size:10px;font-weight:600;color:var(--md-sys-color-tertiary);background:var(--md-sys-color-tertiary-container);border-radius:var(--md-sys-shape-full);padding:1px 7px;flex-shrink:0;}
+  .ttl-badge.crit{color:var(--md-sys-color-error);background:var(--md-sys-color-error-container);}
+  .cat-badge{font-size:10px;font-weight:600;color:var(--md-sys-color-secondary);background:var(--md-sys-color-secondary-container);border-radius:var(--md-sys-shape-full);padding:1px 7px;flex-shrink:0;text-transform:uppercase;}
+  .note-card-delete{width:32px;height:32px;border-radius:var(--md-sys-shape-full);border:none;background:transparent;
+    color:var(--md-sys-color-on-surface-variant);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    opacity:0;flex-shrink:0;transition:opacity .1s,background .1s;}
+  .note-card:hover .note-card-delete{opacity:.7;}
+  .note-card-delete:hover{opacity:1!important;background:color-mix(in srgb,var(--md-sys-color-error) 12%,transparent);color:var(--md-sys-color-error);}
+  .note-card-action{opacity:.7!important;}
+  .empty-state{display:none;flex-direction:column;align-items:center;justify-content:center;padding:64px 24px;gap:12px;text-align:center;}
+  .empty-state.show{display:flex;}
+  .empty-ghost{width:72px;height:72px;opacity:.15;animation:float 5s ease-in-out infinite;}
+  .empty-state h3{font-family:'Nunito',system-ui,sans-serif;font-size:18px;font-weight:700;color:var(--md-sys-color-on-surface);}
+  .empty-state p{font-size:14px;color:var(--md-sys-color-on-surface-variant);max-width:240px;}
+  .fab{position:fixed;bottom:24px;right:20px;z-index:20;height:56px;padding:0 20px;
+    background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);
+    border:none;border-radius:var(--md-sys-shape-extra-large);font-family:'Nunito',system-ui,sans-serif;
+    font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;cursor:pointer;
+    box-shadow:0 3px 5px rgba(0,0,0,.2),0 6px 10px rgba(0,0,0,.14);overflow:hidden;transition:box-shadow .2s,transform .15s;}
+  .fab::before{content:'';position:absolute;inset:0;background:var(--md-sys-color-on-primary-container);opacity:0;transition:opacity .1s;}
+  .fab:hover{box-shadow:0 6px 10px rgba(0,0,0,.22),0 8px 14px rgba(0,0,0,.16);transform:translateY(-1px);}
+  .fab:hover::before{opacity:.08;}
+  .fab:active{box-shadow:0 1px 3px rgba(0,0,0,.2);transform:scale(.97);}
+  .fab svg,.fab span{position:relative;z-index:1;}
+
+  /* ─── EDITOR SCREEN ─── */
+  #screen-editor{background:var(--md-sys-color-surface);z-index:15;transform:translateY(100%);
+    transition:transform .4s cubic-bezier(0,0,0,1),opacity .3s;}
+  #screen-editor.active{transform:translateY(0);}
+  #screen-editor.slide-down-exit{transform:translateY(100%);transition-timing-function:cubic-bezier(.3,0,1,1);transition-duration:.35s;}
+  .editor-top-bar{height:64px;background:var(--md-sys-color-surface-container-low);display:flex;align-items:center;padding:0 4px;flex-shrink:0;}
+  #editor-title{flex:1;background:transparent;border:none;outline:none;font-family:'Nunito',system-ui,sans-serif;
+    font-size:20px;font-weight:700;color:var(--md-sys-color-on-surface);padding:0 4px;-webkit-user-select:auto;user-select:auto;min-width:0;}
+  #editor-title::placeholder{color:var(--md-sys-color-on-surface-variant);font-weight:400;opacity:.6;}
+  .editor-color-row{display:flex;align-items:center;gap:6px;padding:10px 16px;background:var(--md-sys-color-surface-container-low);
+    border-top:1px solid var(--md-sys-color-outline-variant);flex-shrink:0;overflow-x:auto;}
+  .color-label{font-size:11px;font-weight:600;color:var(--md-sys-color-on-surface-variant);letter-spacing:.5px;text-transform:uppercase;margin-right:2px;flex-shrink:0;}
+  .color-dot{width:26px;height:26px;border-radius:var(--md-sys-shape-full);border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:transform .15s,border-color .1s,box-shadow .1s;}
+  .color-dot:hover{transform:scale(1.15);}
+  .color-dot.active{border-color:var(--md-sys-color-on-surface);box-shadow:0 0 0 1px var(--md-sys-color-surface);}
+  .color-dot[data-c="none"]{background:var(--md-sys-color-surface-container-highest);border:2px solid var(--md-sys-color-outline);}
+  .color-dot[data-c="rose"]{background:#F28B82;} .color-dot[data-c="amber"]{background:#F9C74F;}
+  .color-dot[data-c="sage"]{background:#90BE6D;} .color-dot[data-c="sky"]{background:#43AA8B;}
+  .color-dot[data-c="iris"]{background:#9B72CF;} .color-dot[data-c="sand"]{background:#D4A373;}
+  .color-row-sep{width:1px;height:20px;background:var(--md-sys-color-outline-variant);flex-shrink:0;margin:0 2px;}
+  .ttl-select{background:transparent;border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-full);
+    color:var(--md-sys-color-on-surface-variant);font-family:'Nunito Sans',system-ui,sans-serif;font-size:11px;padding:4px 8px;cursor:pointer;outline:none;flex-shrink:0;}
+  .ttl-select option{background:var(--md-sys-color-surface);}
+  #editor-content{flex:1;background:transparent;border:none;outline:none;resize:none;font-family:'Nunito Sans',system-ui,sans-serif;
+    font-size:15px;line-height:1.85;color:var(--md-sys-color-on-surface);padding:16px 20px 80px;overflow-y:auto;
+    -webkit-user-select:auto;user-select:auto;scrollbar-width:thin;scrollbar-color:var(--md-sys-color-outline-variant) transparent;}
+  #editor-content::placeholder{color:var(--md-sys-color-on-surface-variant);opacity:.4;}
+  #md-preview{display:none;flex:1;overflow-y:auto;padding:16px 20px 80px;color:var(--md-sys-color-on-surface);
+    font-family:'Nunito Sans',system-ui,sans-serif;font-size:15px;line-height:1.85;-webkit-user-select:text;user-select:text;}
+  #md-preview.active{display:block;}
+  #md-preview h1{font-family:'Nunito',system-ui,sans-serif;font-size:24px;font-weight:700;color:var(--md-sys-color-primary);margin:20px 0 12px;border-bottom:1px solid var(--md-sys-color-outline-variant);padding-bottom:8px;}
+  #md-preview h2{font-family:'Nunito',system-ui,sans-serif;font-size:18px;font-weight:700;color:var(--md-sys-color-primary);margin:16px 0 10px;}
+  #md-preview h3{font-size:15px;font-weight:600;margin:14px 0 8px;}
+  #md-preview p{margin:0 0 12px;} #md-preview hr{border:none;border-top:1px solid var(--md-sys-color-outline-variant);margin:18px 0;}
+  #md-preview ul,#md-preview ol{padding-left:20px;margin:8px 0 12px;} #md-preview li{margin-bottom:5px;}
+  #md-preview pre{background:var(--md-sys-color-surface-container-high);border:1px solid var(--md-sys-color-outline-variant);border-radius:8px;padding:14px 16px;margin:12px 0;overflow-x:auto;font-size:13px;}
+  #md-preview code{background:var(--md-sys-color-surface-container-high);border-radius:4px;padding:1px 6px;font-size:13px;color:var(--md-sys-color-primary);}
+  #md-preview pre code{background:none;padding:0;color:var(--md-sys-color-on-surface);}
+  #md-preview a{color:var(--md-sys-color-primary);} #md-preview strong{font-weight:700;} #md-preview em{font-style:italic;color:var(--md-sys-color-tertiary);}
+  #md-preview blockquote{border-left:3px solid var(--md-sys-color-primary);padding:4px 14px;margin:12px 0;color:var(--md-sys-color-on-surface-variant);font-style:italic;}
+  .editor-meta{padding:6px 16px 8px;font-size:11px;color:var(--md-sys-color-on-surface-variant);opacity:.55;
+    background:var(--md-sys-color-surface-container-low);flex-shrink:0;border-top:1px solid var(--md-sys-color-outline-variant);
+    display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  #autosave-indicator{font-size:10px;color:var(--md-sys-color-primary);opacity:0;transition:opacity .4s;white-space:nowrap;flex-shrink:0;}
+
+  /* ─── MODALS (V5 — intactos) ─── */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-end;
+    justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+  .modal-backdrop.active{opacity:1;pointer-events:all;}
+  .modal-sheet{width:100%;max-width:520px;background:var(--md-sys-color-surface-container-low);border-radius:28px 28px 0 0;
+    padding:12px 24px 40px;transform:translateY(100%);transition:transform .35s cubic-bezier(0,0,0,1);max-height:88vh;overflow-y:auto;scrollbar-width:none;
+    /* ▼ FIX: scroll dentro do bottom-sheet no Android WebView */
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;}
+  .modal-sheet::-webkit-scrollbar{display:none;}
+  /* FIX: garantir que o backdrop não capture eventos de pan vertical */
+  .modal-backdrop.active{touch-action:none;}
+  .modal-backdrop.active .modal-sheet{touch-action:pan-y;}
+  .modal-backdrop.active .modal-sheet{transform:translateY(0);}
+  .sheet-handle{width:32px;height:4px;border-radius:2px;background:var(--md-sys-color-on-surface-variant);opacity:.4;margin:0 auto 20px;}
+  .sheet-title{font-family:'Nunito',system-ui,sans-serif;font-size:22px;font-weight:700;color:var(--md-sys-color-on-surface);margin-bottom:20px;}
+  .settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--md-sys-color-outline-variant);gap:16px;}
+  .settings-row:last-of-type{border-bottom:none;}
+  .settings-row-text{flex:1;min-width:0;}
+  .settings-row-label{font-size:14px;font-weight:600;color:var(--md-sys-color-on-surface);}
+  .settings-row-sub{font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-top:1px;}
+  .md3-switch{width:52px;height:32px;border-radius:16px;border:2px solid var(--md-sys-color-outline);
+    background:var(--md-sys-color-surface-variant);cursor:pointer;position:relative;transition:background .2s,border-color .2s;flex-shrink:0;}
+  .md3-switch.on{background:var(--md-sys-color-primary);border-color:var(--md-sys-color-primary);}
+  .md3-switch-thumb{position:absolute;top:50%;left:4px;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;
+    background:var(--md-sys-color-outline);transition:transform .2s,background .2s,width .15s;}
+  .md3-switch.on .md3-switch-thumb{background:var(--md-sys-color-on-primary);transform:translate(20px,-50%);width:24px;left:2px;}
+  .md3-btn-text{background:none;border:none;color:var(--md-sys-color-primary);font-family:'Nunito',system-ui,sans-serif;
+    font-size:14px;font-weight:700;padding:8px 12px;border-radius:var(--md-sys-shape-full);cursor:pointer;transition:background .1s;flex-shrink:0;}
+  .md3-btn-text:hover{background:color-mix(in srgb,var(--md-sys-color-primary) 10%,transparent);}
+  .md3-btn-text.danger{color:var(--md-sys-color-error);}
+  .md3-btn-text.danger:hover{background:color-mix(in srgb,var(--md-sys-color-error) 10%,transparent);}
+  input[type="color"]{width:40px;height:40px;border:2px solid var(--md-sys-color-outline);border-radius:8px;cursor:pointer;padding:2px;background:transparent;flex-shrink:0;}
+  .modal-backdrop.dialog{align-items:center;}
+  .modal-dialog{background:var(--md-sys-color-surface-container-highest);border-radius:var(--md-sys-shape-extra-large);
+    padding:24px;width:calc(100% - 48px);max-width:312px;transform:scale(.88);transition:transform .25s cubic-bezier(0,0,0,1);}
+  .modal-backdrop.dialog.active .modal-dialog{transform:scale(1);}
+  .dialog-icon{color:var(--md-sys-color-error);margin-bottom:16px;}
+  .dialog-title{font-family:'Nunito',system-ui,sans-serif;font-size:20px;font-weight:700;color:var(--md-sys-color-on-surface);margin-bottom:12px;}
+  .dialog-body{font-size:14px;line-height:1.65;color:var(--md-sys-color-on-surface-variant);margin-bottom:24px;}
+  .dialog-actions{display:flex;justify-content:flex-end;gap:8px;}
+  .modal-input{width:100%;background:transparent;border:1px solid var(--md-sys-color-outline);border-radius:var(--md-sys-shape-extra-small);
+    color:var(--md-sys-color-on-surface);font-family:'Nunito Sans',system-ui,sans-serif;font-size:14px;padding:12px 14px;outline:none;margin-top:8px;
+    transition:border-color .2s;-webkit-user-select:auto;user-select:auto;}
+  .modal-input:focus{border-color:var(--md-sys-color-primary);}
+  .modal-input[type="file"]{cursor:pointer;color:var(--md-sys-color-on-surface-variant);}
+  .modal-info{font-size:13px;color:var(--md-sys-color-on-surface-variant);line-height:1.8;border-left:3px solid var(--md-sys-color-primary);padding-left:12px;margin:12px 0;}
+  .modal-info.danger{border-color:var(--md-sys-color-error);color:var(--md-sys-color-error);}
+  .modal-lbl{font-size:11px;font-weight:600;color:var(--md-sys-color-on-surface-variant);letter-spacing:.5px;text-transform:uppercase;margin-top:16px;}
+  .modal-lbl:first-child{margin-top:0;}
+  .dialog-btn-row{display:flex;justify-content:flex-end;gap:8px;margin-top:8px;}
+  .change-pwd-fields{display:flex;flex-direction:column;gap:16px;margin-bottom:20px;}
+  /* Snackbar (V5 — intacto) */
+  #snackbar{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(16px);
+    background:var(--md-sys-color-inverse-surface);color:var(--md-sys-color-inverse-on-surface);
+    border-radius:var(--md-sys-shape-extra-small);padding:14px 20px;font-family:'Nunito Sans',system-ui,sans-serif;
+    font-size:14px;font-weight:500;white-space:nowrap;max-width:calc(100vw - 40px);opacity:0;pointer-events:none;
+    z-index:999;box-shadow:0 3px 8px rgba(0,0,0,.25);transition:opacity .2s,transform .2s;overflow:hidden;text-overflow:ellipsis;}
+  #snackbar.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  /* Session badge (V5 — intacto) */
+  .session-badge{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;
+    color:var(--md-sys-color-on-surface-variant);background:var(--md-sys-color-surface-container-high);
+    border-radius:var(--md-sys-shape-full);padding:4px 14px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:50;}
+  .session-badge.warn{background:var(--md-sys-color-error-container);color:var(--md-sys-color-on-error-container);opacity:1;}
+
+  /* ─── DECOY CALCULATOR (V4 — CSS INTOCADO) ─── */
+  #decoy{display:none;position:fixed;inset:0;z-index:10000;background:#0d1117;align-items:center;justify-content:center;font-family:'Courier New',monospace;}
+  #decoy.active{display:flex;}
+  .d-calc{background:#161b22;border-radius:20px;padding:24px;width:300px;box-shadow:0 24px 80px rgba(0,0,0,.9);}
+  .d-display{background:#0d1117;border-radius:10px;padding:20px 16px 14px;text-align:right;margin-bottom:20px;border:1px solid #21262d;}
+  .d-expr{font-size:12px;color:#484f58;min-height:18px;margin-bottom:4px;}
+  .d-val{font-size:36px;color:#c9d1d9;letter-spacing:-1px;}
+  .d-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .d-btn{padding:22px 0;border:none;border-radius:10px;font-size:18px;cursor:pointer;transition:all .1s;font-family:'Courier New',monospace;color:#c9d1d9;min-height:54px;}
+  .d-btn:active{transform:scale(.93);}
+  .d-btn.num{background:#21262d;} .d-btn.num:hover{background:#30363d;}
+  .d-btn.op{background:#1f6feb;color:#fff;} .d-btn.op:hover{background:#388bfd;}
+  .d-btn.eq{background:#238636;color:#fff;} .d-btn.eq:hover{background:#2ea043;}
+  .d-btn.clr{background:#21262d;color:#f85149;}
+  .d-btn.wide{grid-column:span 2;text-align:left;padding-left:24px;}
+  .d-hint{text-align:center;margin-top:14px;font-size:10px;color:#21262d;cursor:default;}
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DECOY CALCULATOR (V4 — INTOCADO)
+     Em V5: ativado APENAS por Modo Pânico (ESC×3/Ctrl+Shift+P).
+     10+35= → stealthUnlock() → volta ao vault/editor.
+     Duplo-clique/Esc → releasePanic() (só se _inPanicMode===true).
+══════════════════════════════════════════════════════════════════ -->
+<div id="decoy">
+  <div>
+    <div class="d-calc">
+      <div class="d-display">
+        <div class="d-expr" id="d-expr"></div>
+        <div class="d-val"  id="d-val">0</div>
+      </div>
+      <div class="d-grid">
+        <button class="d-btn clr"  onclick="dc('AC')">AC</button>
+        <button class="d-btn num"  onclick="dc('+/-')">+/-</button>
+        <button class="d-btn num"  onclick="dc('%')">%</button>
+        <button class="d-btn op"   onclick="dc('÷')">÷</button>
+        <button class="d-btn num"  onclick="dc('7')">7</button>
+        <button class="d-btn num"  onclick="dc('8')">8</button>
+        <button class="d-btn num"  onclick="dc('9')">9</button>
+        <button class="d-btn op"   onclick="dc('×')">×</button>
+        <button class="d-btn num"  onclick="dc('4')">4</button>
+        <button class="d-btn num"  onclick="dc('5')">5</button>
+        <button class="d-btn num"  onclick="dc('6')">6</button>
+        <button class="d-btn op"   onclick="dc('-')">−</button>
+        <button class="d-btn num"  onclick="dc('1')">1</button>
+        <button class="d-btn num"  onclick="dc('2')">2</button>
+        <button class="d-btn num"  onclick="dc('3')">3</button>
+        <button class="d-btn op"   onclick="dc('+')">+</button>
+        <button class="d-btn num wide" onclick="dc('0')">0</button>
+        <button class="d-btn num"  onclick="dc('.')">.</button>
+        <button class="d-btn eq"   onclick="dc('=')">=</button>
+      </div>
+      <div class="d-hint">v2.5.1</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 1: AUTENTICAÇÃO (V5 design + V4 crypto engine)
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-auth" class="screen active">
+  <div class="auth-container">
+    <div class="auth-icon-wrap" id="auth-icon" onclick="authIconClick()">
+      <svg viewBox="0 0 24 24"><path d="M12 3C8.69 3 6 5.69 6 9v1.17C5.41 10.57 5 11.24 5 12v7l1.5-1 1.5 1 1.5-1 1.5 1 1.5-1 1.5 1 1.5-1 1.5 1v-7c0-.76-.41-1.43-1-1.83V9c0-3.31-2.69-6-6-6zm0 2c2.21 0 4 1.79 4 4v1H8V9c0-2.21 1.79-4 4-4zm-1.5 9c-.83 0-1.5.67-1.5 1.5S9.67 17 10.5 17s1.5-.67 1.5-1.5S11.33 14 10.5 14zm3 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/></svg>
+    </div>
+    <h1 class="auth-title">Nox</h1>
+    <p class="auth-subtitle" id="auth-subtitle">Suas anotações, em segurança.</p>
+
+    <div class="md3-outlined-field">
+      <input type="password" id="auth-password" placeholder=" " autocomplete="off" spellcheck="false" maxlength="64">
+      <label id="auth-pwd-label">Senha do cofre</label>
+      <button class="md3-field-trailing" id="btn-toggle-visibility">
+        <svg id="icon-eye" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+      <span class="md3-field-supporting" id="auth-error-msg" role="alert" aria-live="assertive"></span>
+    </div>
+
+    <div class="md3-outlined-field" id="auth-confirm-wrap" style="display:none;margin-top:4px;">
+      <input type="password" id="auth-password2" placeholder=" " autocomplete="new-password" maxlength="64">
+      <label>Confirmar senha</label>
+      <span class="md3-field-supporting"></span>
+    </div>
+
+    <button class="md3-btn-filled" id="btn-unlock" onclick="handleAuth()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span id="btn-unlock-text">Desbloquear cofre</span>
+    </button>
+
+    <p class="auth-mode-toggle" id="auth-mode-toggle" onclick="toggleAuthMode()">→ Ainda não tenho cofre, criar</p>
+    <p class="auth-footer">AES-256-GCM · PBKDF2-SHA256 · 310.000 iterações<br>Chave apenas na RAM · Nunca toca o disco<br><span style="opacity:.6;">ESC×3 · Ctrl+Shift+P = Pânico &nbsp;|&nbsp; Ctrl+S = Salvar</span></p>
+    <p id="auth-recovery-link" onclick="openRecoveryModal()">⚠ Recuperação de emergência</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 2: COFRE (V5 MD3 cards + V4 features: pin, TTL, categoria)
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-vault" class="screen">
+  <header class="top-app-bar" id="vault-top-bar">
+    <h1 class="top-app-bar-title" id="vault-title">Nox</h1>
+    <button class="icon-btn" onclick="lockApp()" title="Bloquear (Ctrl+L)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </button>
+    <button class="icon-btn" onclick="Modals.openSettings()" title="Configurações">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="search-container">
+    <div class="search-bar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar notas…" autocomplete="off" spellcheck="false">
+      <button class="icon-btn" id="search-clear" onclick="clearSearch()" style="width:36px;height:36px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="vault-tabs">
+    <button class="vault-tab active" id="tab-notes" onclick="switchView('notes')">📝 Notas</button>
+    <button class="vault-tab"        id="tab-trash" onclick="switchView('trash')">🗑 Lixeira</button>
+  </div>
+
+  <div class="vault-scroll" id="vault-scroll">
+    <div class="notes-grid" id="notes-grid"></div>
+    <div class="empty-state" id="empty-state">
+      <svg class="empty-ghost" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C8.69 3 6 5.69 6 9v1.17C5.41 10.57 5 11.24 5 12v7l1.5-1 1.5 1 1.5-1 1.5 1 1.5-1 1.5 1 1.5-1 1.5 1v-7c0-.76-.41-1.43-1-1.83V9c0-3.31-2.69-6-6-6z"/></svg>
+      <h3 id="empty-title">Cofre vazio</h3>
+      <p id="empty-sub">Toque em + para criar sua primeira nota segura.</p>
+    </div>
+  </div>
+
+  <button class="fab" onclick="newNote()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Nova nota</span>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 3: EDITOR (V5 slide-up + V4: AES save, markdown, pin, TTL)
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-editor" class="screen">
+  <div class="editor-top-bar">
+    <button class="icon-btn" onclick="closeCurrentEditor()" title="Voltar (Esc)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-editor-preview" onclick="togglePreviewMode()" title="Preview Markdown">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-editor-pin" onclick="togglePinNote()" title="Fixar no topo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24z"/></svg>
+    </button>
+    <input type="text" id="editor-title" placeholder="Título" autocomplete="off" spellcheck="false" maxlength="140">
+    <button class="icon-btn" onclick="copyNoteContent()" title="Copiar (auto-clear 30s)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-editor-save" onclick="saveNote(false)" title="Salvar (Ctrl+S)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-editor-delete" onclick="Modals.confirmDelete()" title="Excluir" style="color:var(--md-sys-color-error);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </button>
+  </div>
+
+  <div class="editor-color-row">
+    <span class="color-label">Cor</span>
+    <button class="color-dot active" data-c="none"  onclick="setEditorColor('none')"></button>
+    <button class="color-dot"        data-c="rose"  onclick="setEditorColor('rose')"></button>
+    <button class="color-dot"        data-c="amber" onclick="setEditorColor('amber')"></button>
+    <button class="color-dot"        data-c="sage"  onclick="setEditorColor('sage')"></button>
+    <button class="color-dot"        data-c="sky"   onclick="setEditorColor('sky')"></button>
+    <button class="color-dot"        data-c="iris"  onclick="setEditorColor('iris')"></button>
+    <button class="color-dot"        data-c="sand"  onclick="setEditorColor('sand')"></button>
+    <div class="color-row-sep"></div>
+    <select class="ttl-select" id="ttl-sel" title="Auto-destruição">
+      <option value="">Sem expiração</option>
+      <option value="3600000">Destruir em 1h</option>
+      <option value="21600000">Destruir em 6h</option>
+      <option value="86400000">Destruir em 24h</option>
+      <option value="259200000">Destruir em 3 dias</option>
+      <option value="604800000">Destruir em 7 dias</option>
+    </select>
+  </div>
+
+  <textarea id="editor-content" placeholder="Comece a escrever… (Markdown suportado: # h1, **bold**, *italic*, `code`, ```bloco```, - lista, > citação)"></textarea>
+  <div id="md-preview"></div>
+
+  <div class="editor-meta">
+    <span id="editor-meta-date">—</span>
+    <span id="autosave-indicator">✓ salvo</span>
+    <span id="editor-meta-chars">0 chars</span>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Configurações ═══ -->
+<div id="modal-settings" class="modal-backdrop" onclick="if(event.target===this)Modals.closeSettings()">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">Configurações</h2>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label">Tema escuro</div><div class="settings-row-sub">Forçar modo escuro</div></div>
+      <div class="md3-switch" id="switch-dark-mode" role="switch" aria-checked="false" onclick="Settings.toggleDarkMode()"><div class="md3-switch-thumb"></div></div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label">Cor primária</div><div class="settings-row-sub">Personaliza toda a paleta Material You</div></div>
+      <input type="color" id="color-picker" value="#6750A4" oninput="Settings.applyColor(this.value)">
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label">Alterar senha</div><div class="settings-row-sub">Re-criptografa todo o cofre</div></div>
+      <button class="md3-btn-text" onclick="Modals.openChangePwd()">Alterar</button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label">Modo Pânico</div><div class="settings-row-sub">ESC×3 · Ctrl+Shift+P · botão aqui</div></div>
+      <button class="md3-btn-text" onclick="Modals.closeSettings();triggerPanic()">Ativar</button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label">Exportar cofre cifrado</div><div class="settings-row-sub">Backup JSON AES-256-GCM</div></div>
+      <button class="md3-btn-text" onclick="Modals.closeSettings();openExportModal()">Exportar</button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label">Importar cofre</div><div class="settings-row-sub">Mescla notas de um backup</div></div>
+      <button class="md3-btn-text" onclick="Modals.closeSettings();openImportModal()">Importar</button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-text"><div class="settings-row-label" style="color:var(--md-sys-color-error)">Apagar tudo</div><div class="settings-row-sub">Sobrescrita segura — irreversível</div></div>
+      <button class="md3-btn-text danger" onclick="Modals.closeSettings();confirmNuke()">Apagar</button>
+    </div>
+    <div style="margin-top:20px;font-size:11px;color:var(--md-sys-color-on-surface-variant);opacity:.45;text-align:center;line-height:1.8;">Nox · AES-256-GCM · PBKDF2 310k · IndexedDB<br>Armazenamento 100% local · Sem telemetria</div>
+    <div style="text-align:center;margin-top:12px;"><span onclick="Modals.closeSettings();openRecoveryModal()" style="font-size:10px;color:var(--md-sys-color-error);opacity:.3;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.3'">⚠ Recuperação de emergência</span></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Confirmar excluir ═══ -->
+<div id="modal-delete" class="modal-backdrop dialog">
+  <div class="modal-dialog" onclick="event.stopPropagation()">
+    <svg class="dialog-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    <h2 class="dialog-title">Mover para lixeira?</h2>
+    <p class="dialog-body">A nota será destruída permanentemente após 7 dias.</p>
+    <div class="dialog-actions">
+      <button class="md3-btn-text" onclick="Modals.closeDelete()">Cancelar</button>
+      <button class="md3-btn-text danger" onclick="trashCurrentNote()">Mover para lixeira</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Confirmar genérico (V4 confirm2) ═══ -->
+<div id="modal-confirm" class="modal-backdrop dialog">
+  <div class="modal-dialog" onclick="event.stopPropagation()">
+    <svg class="dialog-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <h2 class="dialog-title" id="mc-title">Confirmar</h2>
+    <p class="dialog-body" id="mc-msg"></p>
+    <div class="dialog-actions">
+      <button class="md3-btn-text" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="md3-btn-text danger" id="mc-ok">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Alterar senha ═══ -->
+<div id="modal-change-pwd" class="modal-backdrop" onclick="if(event.target===this)Modals.closeChangePwd()">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">Alterar senha</h2>
+    <div class="modal-info">O cofre será <strong>re-criptografado</strong> com a nova chave PBKDF2.</div>
+    <div class="change-pwd-fields" style="margin-top:16px;">
+      <div class="md3-outlined-field">
+        <input type="password" id="new-pwd" placeholder=" " autocomplete="new-password">
+        <label>Nova senha (mín. 8 caracteres)</label>
+        <span class="md3-field-supporting" id="new-pwd-err"></span>
+      </div>
+      <div class="md3-outlined-field">
+        <input type="password" id="new-pwd2" placeholder=" " autocomplete="new-password">
+        <label>Confirmar nova senha</label>
+      </div>
+    </div>
+    <div class="dialog-btn-row">
+      <button class="md3-btn-text" onclick="Modals.closeChangePwd()">Cancelar</button>
+      <button class="md3-btn-text" id="btn-change-pwd" onclick="changePassword()" style="font-weight:800;">Salvar e re-criptografar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Exportar ═══ -->
+<div id="modal-export" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-export')">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">⬆ Exportar cofre cifrado</h2>
+    <div class="modal-info">JSON criptografado — legível apenas com sua senha.</div>
+    <div class="modal-lbl">Nome do arquivo</div>
+    <input class="modal-input" id="exp-fname" value="ghostpad_vault" spellcheck="false" autocomplete="off">
+    <div class="dialog-btn-row" style="margin-top:20px;">
+      <button class="md3-btn-text" onclick="closeModal('modal-export')">Cancelar</button>
+      <button class="md3-btn-text" onclick="doExport()" style="font-weight:800;">Exportar ▸</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Importar ═══ -->
+<div id="modal-import" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-import')">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">⬇ Importar cofre</h2>
+    <div class="modal-info">Mescla notas cifradas com o cofre atual.</div>
+    <div class="modal-lbl">Arquivo JSON</div>
+    <input type="file" class="modal-input" id="imp-file" accept=".json">
+    <div class="modal-lbl">Senha do arquivo (se diferente da atual)</div>
+    <input type="password" class="modal-input" id="imp-pwd" placeholder="Vazio = usar senha atual" autocomplete="off">
+    <div class="dialog-btn-row" style="margin-top:20px;">
+      <button class="md3-btn-text" onclick="closeModal('modal-import')">Cancelar</button>
+      <button class="md3-btn-text" onclick="doImport()" style="font-weight:800;">Importar ▸</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Recuperação de emergência ═══ -->
+<div id="modal-recovery" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-recovery')">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title" style="color:var(--md-sys-color-error)">⚠ Recuperação de emergência</h2>
+    <div style="border:1px solid var(--md-sys-color-outline-variant);border-radius:16px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:700;color:var(--md-sys-color-primary);letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase;">Opção A — Chave Mestra (Bypass)</div>
+      <div class="modal-info">Abre o app com cofre <strong>vazio</strong>. Notas anteriores inacessíveis sem a senha original.</div>
+      <div class="modal-lbl">Chave mestra</div>
+      <input type="password" class="modal-input" id="rec-master-key" placeholder="••••••••••••••••••••••" autocomplete="off" spellcheck="false">
+      <div id="rec-master-error" style="font-size:11px;color:var(--md-sys-color-error);min-height:16px;margin-top:8px;"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+        <button class="md3-btn-text" onclick="doMasterKeyBypass()">Acessar com chave mestra ▸</button>
+      </div>
+    </div>
+    <div style="border:1px solid var(--md-sys-color-error-container);border-radius:16px;padding:16px;">
+      <div style="font-size:12px;font-weight:700;color:var(--md-sys-color-error);letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase;">Opção B — Hard Reset ☢ (Irreversível)</div>
+      <div class="modal-info danger">Apaga <strong>permanentemente</strong> todo o IndexedDB.</div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+        <button class="md3-btn-text danger" onclick="doHardReset()">☢ Apagar tudo e reiniciar</button>
+      </div>
+    </div>
+    <div class="dialog-btn-row" style="margin-top:16px;">
+      <button class="md3-btn-text" onclick="closeModal('modal-recovery')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Confirmar Hard Reset ═══ -->
+<div id="modal-reset-confirm" class="modal-backdrop dialog">
+  <div class="modal-dialog" onclick="event.stopPropagation()">
+    <svg class="dialog-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <h2 class="dialog-title" style="color:var(--md-sys-color-error)">☢ Confirmação final</h2>
+    <p class="dialog-body">O banco <strong>GhostPadVaultDB</strong> será deletado. Todas as notas cifradas serão <strong>permanentemente destruídas</strong>.</p>
+    <div class="modal-lbl">Digite "CONFIRMAR RESET"</div>
+    <input class="modal-input" id="reset-confirm-input" placeholder="CONFIRMAR RESET" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:1px;">
+    <div class="dialog-actions" style="margin-top:16px;">
+      <button class="md3-btn-text" onclick="closeModal('modal-reset-confirm')">Cancelar</button>
+      <button class="md3-btn-text danger" onclick="executeHardReset()">☢ Destruir banco</button>
+    </div>
+  </div>
+</div>
+
+<div id="snackbar" aria-live="polite" aria-atomic="true"></div>
+<div class="session-badge" id="session-badge" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* ════════════════════════════════════════════════════════════════════
+   GHOST PAD — MERGED: V5 DESIGN SYSTEM + V4 SECURITY ENGINE
+   "O cérebro do V4 no corpo do V5"
+
+   L0  CFG           Configurações e constantes (V4 — INTOCADO)
+   L1  CryptoEngine  AES-256-GCM + PBKDF2-SHA256 310k (V4 — INTOCADO)
+   L2  DB            IndexedDB blobs cifrados — zero plaintext (V4)
+   L3  S             Estado RAM — chave nunca vai ao disco (V4)
+   L4  UI            Bridge V4→V5: toast→snackbar, navigate, renderList
+   F01 Auth          handleAuth / createVault / unlockVault (V4 crypto)
+   F02 Panic/Decoy   triggerPanic / releasePanic / stealthUnlock (V4)
+   F03 Calculator    dc() + interceptor 10+35= (V4 — INTOCADO)
+   F04 SessionMon    Timeout + badge (V4 lógica, V5 badge)
+   F05 CRUD          saveNote / trashNote / pinNote (V4 AES)
+   F06 Render        renderNotes() — cards V5, dados V4
+   F07 Editor        openEditorWithNote() — tela V5, lógica V4
+   F08 Markdown      renderMarkdown() — vanilla parser (V4 — INTOCADO)
+   F09 AutoSave      scheduleAutoSave() 2s debounce (V4)
+   F10 Clipboard     copyNoteContent() auto-clear 30s (V4)
+   F11 Export/Imp    doExport / doImport cifrado (V4 — INTOCADO)
+   F12 TTL           checkTTLExpiry() auto-destruição (V4)
+   F13 Trash         switchView / restoreNote / cleanupTrash (V4)
+   F14 Recovery      masterKey bypass + hard reset (V4)
+   F15 Settings      tema / cor / injectAndroidDynamicColors (V5)
+   F16 Navigation    App.navigate() animações MD3 (V5)
+   F17 ChangePass    changePassword() re-criptografa tudo (V4)
+════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   L0 — CONFIG
+   Fase 2 — Hardening Criptográfico:
+   · MASTER_PASSPHRASE removida (porta dos fundos eliminada)
+   · VERIFIER mantido apenas para retrocompatibilidade com cofres legados
+════════════════════════════════════════════════════════════════════ */
+const CFG = Object.freeze({
+  DB_NAME:'GhostPadVaultDB', DB_VER:1,
+  STORE_NOTES:'notes', STORE_META:'meta',
+  PBKDF2_ITER:310_000, PBKDF2_HASH:'SHA-256',
+  SALT_LEN:32, IV_LEN:12,
+  SESSION_TIMEOUT:5*60*1000,
+  CLIP_CLEAR_MS:30*1000,
+  PANIC_KEY:'Escape', PANIC_COUNT:3, PANIC_WINDOW_MS:1500,
+  TRASH_TTL_DAYS:7,
+  VERIFIER:'GHOST_PAD::VAULT_VERIFIED::v2.0', // legado — usado apenas em checkVerifier()
+});
+
+/* ════════════════════════════════════════════════════════════════════
+   L1 — CRYPTO ENGINE (V4 — INTOCADO)
+   AES-256-GCM + PBKDF2-SHA256 (310.000 iterações)
+   A chave derivada existe APENAS na RAM. Nunca toca o disco.
+════════════════════════════════════════════════════════════════════ */
+const CryptoEngine = {
+  rand(n){ return crypto.getRandomValues(new Uint8Array(n)); },
+  /* ─── NOX BUG FIX: b64enc usa loop — evita stack overflow em notas >90KB ─── */
+  b64enc(u8){
+    let bin = '';
+    const len = u8.length;
+    for(let i = 0; i < len; i++) bin += String.fromCharCode(u8[i]);
+    return btoa(bin);
+  },
+  b64dec(s){ return Uint8Array.from(atob(s), c => c.charCodeAt(0)); },
+  /* ── Fase 4: deriveKeys — "Chaves Gêmeas" ──────────────────────────
+     Deriva duas CryptoKeys independentes a partir da mesma senha+salt,
+     usando PBKDF2 com salts com domínio separado. Zero exportKey.
+     Resolve o erro "key is not extractable" no ChromeOS Flex.
+
+     Chave A (aesKey)  — AES-GCM-256 para cifrar/decifrar notas.
+     Chave B (hmacKey) — HMAC-SHA256 para o verificador do cofre.
+
+     Os salts são extendidos com sufixos distintos para garantir que
+     as duas chaves nunca possam ser intercambiadas mesmo com mesma senha. */
+  async deriveKeys(password, salt){
+    const enc = new TextEncoder();
+    const pwKey = await crypto.subtle.importKey(
+      'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+
+    // Salts com domínio separado — impede reutilização cruzada de chaves
+    const saltAES  = new Uint8Array([...salt, ...enc.encode('\x00aes-gcm-256')]);
+    const saltHMAC = new Uint8Array([...salt, ...enc.encode('\x00hmac-sha256')]);
+
+    const base = { name:'PBKDF2', iterations:CFG.PBKDF2_ITER, hash:CFG.PBKDF2_HASH };
+
+    const [aesKey, hmacKey] = await Promise.all([
+      crypto.subtle.deriveKey(
+        { ...base, salt:saltAES  }, pwKey,
+        { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']),
+      crypto.subtle.deriveKey(
+        { ...base, salt:saltHMAC }, pwKey,
+        { name:'HMAC', hash:'SHA-256' }, false, ['sign','verify']),
+    ]);
+
+    return { aesKey, hmacKey };
+  },
+
+  async encrypt(plaintext, key){
+    const iv = this.rand(CFG.IV_LEN);
+    const cb = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, new TextEncoder().encode(plaintext));
+    const out = new Uint8Array(iv.byteLength + cb.byteLength);
+    out.set(iv); out.set(new Uint8Array(cb), iv.byteLength);
+    return this.b64enc(out);
+  },
+  async decrypt(encoded, key){
+    const buf = this.b64dec(encoded);
+    const iv = buf.slice(0, CFG.IV_LEN);
+    const data = buf.slice(CFG.IV_LEN);
+    const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, data);
+    return new TextDecoder().decode(plain);
+  },
+
+  /* ── Fase 4: makeVerifier — HMAC-SHA256 direto, zero exportKey ──── */
+  async makeVerifier(hmacKey){
+    const nonce = this.rand(32);
+    const sig   = await crypto.subtle.sign('HMAC', hmacKey, nonce);
+    return this.b64enc(nonce) + '.' + this.b64enc(new Uint8Array(sig));
+  },
+
+  /* ── Fase 4: checkVerifier ──────────────────────────────────────────
+     Formato novo  (contém '.'): valida HMAC — sem oráculo de força bruta.
+     Formato legado (sem '.')  : decifra AES-GCM — retrocompatível.
+     aesKey é opcional; só necessário para cofres criados antes da Fase 2. */
+  async checkVerifier(storedVerifier, hmacKey, aesKey){
+    if(!storedVerifier) return false;
+
+    // ── Novo formato: "nonceB64.macB64" ─────────────────────────────
+    if(storedVerifier.includes('.')){
+      try{
+        const [nonceB64, macB64] = storedVerifier.split('.');
+        const nonce = this.b64dec(nonceB64);
+        const mac   = this.b64dec(macB64);
+        return await crypto.subtle.verify('HMAC', hmacKey, mac, nonce);
+      } catch { return false; }
+    }
+
+    // ── Formato legado: ciphertext AES-GCM ──────────────────────────
+    if(!aesKey) return false;
+    try { return (await this.decrypt(storedVerifier, aesKey)) === CFG.VERIFIER; }
+    catch { return false; }
+  },
+};
+
+/* ════════════════════════════════════════════════════════════════════
+   L2 — DB ENGINE (V4 — INTOCADO)
+   IndexedDB · blobs cifrados apenas · zero plaintext em disco
+════════════════════════════════════════════════════════════════════ */
+const DB = {
+  _db: null,
+  async open(){
+    if(this._db) return this._db;
+    return new Promise((ok, fail) => {
+      const req = indexedDB.open(CFG.DB_NAME, CFG.DB_VER);
+      req.onupgradeneeded = e => {
+        const db = e.target.result;
+        if(!db.objectStoreNames.contains(CFG.STORE_NOTES))
+          db.createObjectStore(CFG.STORE_NOTES, {keyPath:'id'});
+        if(!db.objectStoreNames.contains(CFG.STORE_META))
+          db.createObjectStore(CFG.STORE_META, {keyPath:'key'});
+      };
+      req.onsuccess = e => { this._db = e.target.result; ok(this._db); };
+      req.onerror = e => fail(e.target.error);
+    });
+  },
+  async getMeta(key){
+    const db = await this.open();
+    return new Promise((ok, fail) => {
+      const r = db.transaction(CFG.STORE_META,'readonly').objectStore(CFG.STORE_META).get(key);
+      r.onsuccess = () => ok(r.result?.value ?? null);
+      r.onerror   = () => fail(r.error);
+    });
+  },
+  async setMeta(key, value){
+    const db = await this.open();
+    return new Promise((ok, fail) => {
+      const r = db.transaction(CFG.STORE_META,'readwrite').objectStore(CFG.STORE_META).put({key, value});
+      r.onsuccess = () => ok(); r.onerror = () => fail(r.error);
+    });
+  },
+  async getAll(){
+    const db = await this.open();
+    return new Promise((ok, fail) => {
+      const r = db.transaction(CFG.STORE_NOTES,'readonly').objectStore(CFG.STORE_NOTES).getAll();
+      r.onsuccess = () => ok(r.result || []); r.onerror = () => fail(r.error);
+    });
+  },
+  async put(record){
+    const db = await this.open();
+    return new Promise((ok, fail) => {
+      const r = db.transaction(CFG.STORE_NOTES,'readwrite').objectStore(CFG.STORE_NOTES).put(record);
+      r.onsuccess = () => ok(); r.onerror = () => fail(r.error);
+    });
+  },
+  async secureDelete(id){
+    // Sobrescreve com lixo antes de deletar (V4 — INTOCADO)
+    const junk = CryptoEngine.b64enc(CryptoEngine.rand(128));
+    await this.put({id, title:junk, content:junk, createdAt:0, updatedAt:0, ttl:null});
+    const db = await this.open();
+    return new Promise((ok, fail) => {
+      const r = db.transaction(CFG.STORE_NOTES,'readwrite').objectStore(CFG.STORE_NOTES).delete(id);
+      r.onsuccess = () => ok(); r.onerror = () => fail(r.error);
+    });
+  },
+  async clearAll(){
+    const db = await this.open();
+    return new Promise((ok, fail) => {
+      const r = db.transaction(CFG.STORE_NOTES,'readwrite').objectStore(CFG.STORE_NOTES).clear();
+      r.onsuccess = () => ok(); r.onerror = () => fail(r.error);
+    });
+  },
+  async vaultExists(){ return (await this.getMeta('salt')) !== null; },
+};
+
+/* ════════════════════════════════════════════════════════════════════
+   L3 — SESSION STATE (V4 — INTOCADO)
+   Chave derivada existe APENAS aqui em RAM.
+════════════════════════════════════════════════════════════════════ */
+const S = {
+  key:null, hmacKey:null, notes:[], currentId:null,
+  sessionStart:null, lastActivity:null, locked:true,
+  clipTimer:null, clipInterval:null,
+  sortOrder:'modified', filterQuery:'', viewMode:'notes',
+};
+
+// Contadores/timers globais (V4)
+let _panicCount=0, _panicTimer=null, _inPanicMode=false;
+let _searchTimer=null, _autoSaveTimer=null, _previewMode=false;
+let _editorColor=null;
+
+/* ════════════════════════════════════════════════════════════════════
+   L4 — UI BRIDGE
+   Conecta chamadas V4 à estrutura DOM V5.
+   toast()→snackbar, showLock()→navigate('auth'), renderList()→renderNotes()
+════════════════════════════════════════════════════════════════════ */
+const UI = {
+  _snackTimer: null,
+  toast(msg, _type='s', ms=3000){ this.snack(msg, ms); },
+  snack(msg, ms=2800){
+    const el = document.getElementById('snackbar');
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(this._snackTimer);
+    this._snackTimer = setTimeout(() => el.classList.remove('show'), ms);
+  },
+  showLock(){
+    document.getElementById('auth-password').value = '';
+    document.getElementById('auth-password2').value = '';
+    document.getElementById('auth-error-msg').textContent = '';
+    App.navigate('auth');
+  },
+  showApp(){ App.navigate('vault'); },
+  renderList(){ renderNotes(); },
+  closeEditor(){
+    if(_autoSaveTimer){ clearTimeout(_autoSaveTimer); _autoSaveTimer=null; }
+    if(_previewMode) _exitPreview();
+    S.currentId = null;
+    App.navigate('vault');
+    renderNotes();
+  },
+  showLockError(msg){
+    document.getElementById('auth-error-msg').textContent = msg;
+    const inp = document.getElementById('auth-password');
+    inp.classList.add('field-error');
+    setTimeout(() => inp.classList.remove('field-error'), 1200);
+  },
+};
+
+/* ════════════════════════════════════════════════════════════════════
+   F16 — NAVIGATION (V5 — INTACTO)
+   Animações MD3 entre as três telas.
+════════════════════════════════════════════════════════════════════ */
+const App = {
+  current: 'auth',
+  navigate(target){
+    if(target === this.current) return;
+    const screens = {
+      auth:   document.getElementById('screen-auth'),
+      vault:  document.getElementById('screen-vault'),
+      editor: document.getElementById('screen-editor'),
+    };
+    if(this.current === 'auth' && target === 'vault'){
+      screens.auth.classList.add('slide-up-exit');
+      setTimeout(() => screens.auth.classList.remove('active','slide-up-exit'), 350);
+      screens.vault.classList.add('active');
+    } else if(this.current === 'vault' && target === 'editor'){
+      screens.editor.classList.add('active');
+    } else if(this.current === 'editor' && target === 'vault'){
+      screens.editor.classList.add('slide-down-exit');
+      setTimeout(() => screens.editor.classList.remove('active','slide-down-exit'), 360);
+    } else if(target === 'auth'){
+      ['vault','editor'].forEach(s => screens[s]?.classList.remove('active'));
+      screens.auth.classList.add('active');
+    } else {
+      screens[this.current]?.classList.remove('active');
+      screens[target]?.classList.add('active');
+    }
+    this.current = target;
+
+    /* ▼ FIX BACK BUTTON: sincronizar histórico do browser com a tela atual.
+       'auth' usa replaceState (base sem entrada nova) para que o back saia
+       do app normalmente. Vault e editor empilham entradas. */
+    if(target === 'auth'){
+      history.replaceState({gpad:'auth'}, '');
+    } else {
+      history.pushState({gpad: target}, '');
+    }
+  },
+};
+
+/* ════════════════════════════════════════════════════════════════════
+   F01 — AUTH (V4 crypto · V5 DOM)
+════════════════════════════════════════════════════════════════════ */
+let authMode = 'unlock';
+
+function toggleAuthMode(){
+  authMode = authMode === 'unlock' ? 'create' : 'unlock';
+  refreshAuthUI();
+}
+
+function refreshAuthUI(){
+  const create = authMode === 'create';
+  document.getElementById('auth-subtitle').textContent =
+    create ? 'Crie uma senha forte para seu cofre.' : 'Suas anotações, em segurança.';
+  document.getElementById('auth-pwd-label').textContent =
+    create ? 'Nova senha (mín. 8 caracteres)' : 'Senha do cofre';
+  document.getElementById('auth-confirm-wrap').style.display = create ? 'block' : 'none';
+  document.getElementById('btn-unlock-text').textContent =
+    create ? 'Criar cofre seguro' : 'Desbloquear cofre';
+  document.getElementById('auth-mode-toggle').textContent =
+    create ? '→ Já tenho um cofre, entrar' : '→ Ainda não tenho cofre, criar';
+  document.getElementById('auth-error-msg').textContent = '';
+}
+
+async function handleAuth(){
+  const pwd = document.getElementById('auth-password').value;
+  if(!pwd){ UI.showLockError('Senha obrigatória'); return; }
+  const btn = document.getElementById('btn-unlock');
+  btn.disabled = true;
+  document.getElementById('btn-unlock-text').textContent = 'Processando…';
+  try {
+    if(authMode === 'create') await createVault(pwd);
+    else await unlockVault(pwd);
+  } catch(err) {
+    UI.showLockError(err.message || 'Erro desconhecido');
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-unlock-text').textContent =
+      authMode === 'create' ? 'Criar cofre seguro' : 'Desbloquear cofre';
+  }
+}
+
+/* F01-A: CRIAR COFRE (V4 — INTOCADO) */
+async function createVault(password){
+  const pwd2 = document.getElementById('auth-password2').value;
+  if(password !== pwd2) throw new Error('As senhas não coincidem');
+  if(password.length < 8) throw new Error('Mínimo 8 caracteres');
+  const salt    = CryptoEngine.rand(CFG.SALT_LEN);
+  const saltB64 = CryptoEngine.b64enc(salt);
+  const { aesKey, hmacKey } = await CryptoEngine.deriveKeys(password, salt);
+  const verifier = await CryptoEngine.makeVerifier(hmacKey);
+  await DB.setMeta('salt', saltB64);
+  await DB.setMeta('verifier', verifier);
+  await startSession(aesKey, hmacKey, []);
+  UI.toast('✓ Cofre criado com AES-256-GCM');
+}
+
+/* F01-B: DESBLOQUEAR (V4 — INTOCADO) */
+async function unlockVault(password){
+  const saltB64 = await DB.getMeta('salt');
+  if(!saltB64) throw new Error('Nenhum cofre encontrado — crie um novo');
+  const salt = CryptoEngine.b64dec(saltB64);
+  const { aesKey, hmacKey } = await CryptoEngine.deriveKeys(password, salt);
+  const verifier = await DB.getMeta('verifier');
+  if(!await CryptoEngine.checkVerifier(verifier, hmacKey, aesKey))
+    throw new Error('Senha incorreta — acesso negado');
+  const notes = await loadAndDecrypt(aesKey);
+  await startSession(aesKey, hmacKey, notes);
+  UI.toast(`✓ Cofre desbloqueado — ${notes.filter(n=>!n.deleted).length} nota(s)`);
+}
+
+/* F01-C: DECRYPT LOAD (V4 + campo color do V5) */
+async function loadAndDecrypt(key){
+  const records = await DB.getAll();
+  const out = [];
+  for(const r of records){
+    try {
+      out.push({
+        id:r.id,
+        title:   await CryptoEngine.decrypt(r.title, key),
+        content: await CryptoEngine.decrypt(r.content, key),
+        createdAt:r.createdAt, updatedAt:r.updatedAt,
+        ttl:r.ttl||null, category:r.category||'GERAL',
+        pinned:r.pinned||false, deleted:r.deleted||false, deletedAt:r.deletedAt||null,
+        color:r.color||null,
+      });
+    } catch { /* registro corrompido — pular */ }
+  }
+  return out;
+}
+
+/* F01-D: INICIAR SESSÃO */
+async function startSession(aesKey, hmacKey, notes){
+  S.key=aesKey; S.hmacKey=hmacKey; S.notes=notes; S.currentId=null;
+  S.locked=false; S.sessionStart=Date.now(); S.lastActivity=Date.now();
+  S.sortOrder='modified'; S.filterQuery=''; S.viewMode='notes';
+  const se = document.getElementById('search-input'); if(se) se.value='';
+  const sc = document.getElementById('search-clear'); if(sc) sc.style.display='none';
+  document.getElementById('tab-notes')?.classList.add('active');
+  document.getElementById('tab-trash')?.classList.remove('active');
+  await cleanupTrash();
+  startSessionMonitor(); checkTTLExpiry();
+  App.navigate('vault');
+  renderNotes();
+}
+
+/* LOCK APP */
+function lockApp(){
+  if(_autoSaveTimer){ clearTimeout(_autoSaveTimer); _autoSaveTimer=null; }
+  S.key=null; S.hmacKey=null; S.notes=[]; S.currentId=null; S.locked=true;
+  S.sessionStart=null; S.lastActivity=null; _inPanicMode=false;
+  stopSessionMonitor(); clearClipState();
+  document.querySelectorAll('.modal-backdrop.active').forEach(m => m.classList.remove('active'));
+  document.getElementById('decoy').classList.remove('active');
+  const badge = document.getElementById('session-badge');
+  if(badge){ badge.classList.remove('warn'); badge.style.opacity='0'; }
+  authMode='unlock'; refreshAuthUI();
+  App.navigate('auth');
+  UI.snack('Cofre bloqueado');
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F02 — PANIC / DECOY (V4 + NOX: destruição segura de RAM)
+   triggerPanic()  → zera S.key + S.notes + mostra decoy
+   releasePanic()  → remove decoy (apenas se _inPanicMode===true)
+   stealthUnlock() → 10+35= → releasePanic() (volta ao app se key ainda existir)
+════════════════════════════════════════════════════════════════════ */
+function triggerPanic(){
+  /* NOX SECURITY: destrói chave e notas da RAM antes de mostrar o decoy.
+     Após triggerPanic() o app só pode ser desbloqueado novamente via senha. */
+  S.key = null;
+  S.hmacKey = null;
+  if(Array.isArray(S.notes)){ S.notes.length = 0; S.notes = []; }
+  S.currentId = null;
+  S.locked = true;
+  stopSessionMonitor();
+  _inPanicMode = true;
+  // Cancela qualquer auto-lock timer pendente
+  if(typeof _cancelAutoLockTimer === 'function') _cancelAutoLockTimer(true);
+  document.getElementById('decoy').classList.add('active');
+}
+function releasePanic(){
+  if(!_inPanicMode) return;
+  _inPanicMode = false;
+  document.getElementById('decoy').classList.remove('active');
+}
+function stealthUnlock(){
+  Object.assign(_dc, {v:'0', expr:'', op:null, prev:null, resetNext:false});
+  document.getElementById('d-val').textContent  = '0';
+  document.getElementById('d-expr').textContent = '';
+  if(_inPanicMode){ releasePanic(); }
+  else { document.getElementById('decoy').classList.remove('active'); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F03 — DECOY CALCULATOR ENGINE (V4 — INTOCADO)
+   F12 INTERCEPTOR: 10 + 35 = → stealthUnlock()
+════════════════════════════════════════════════════════════════════ */
+let _dc = {v:'0', expr:'', op:null, prev:null, resetNext:false};
+function dc(btn){
+  const s = _dc;
+  if(btn==='AC'){ Object.assign(s,{v:'0',expr:'',op:null,prev:null,resetNext:false}); }
+  else if(btn==='+/-'){ s.v = String(-parseFloat(s.v)); }
+  else if(btn==='%'){   s.v = String(parseFloat(s.v)/100); }
+  else if(['÷','×','-','+'].includes(btn)){
+    s.prev=parseFloat(s.v); s.op=btn; s.expr=s.v+' '+btn; s.resetNext=true;
+  } else if(btn==='='){
+    if(s.op!==null && s.prev!==null){
+      const cur = parseFloat(s.v);
+      /* ── F03: INTERCEPTOR (V4 — INTOCADO) ─────────────────────
+         prev===10 && op==='+' && cur===35 → stealthUnlock()
+      ─────────────────────────────────────────────────────────── */
+      if(s.prev===10 && s.op==='+' && cur===35){ stealthUnlock(); return; }
+      const ops = {'÷':(a,b)=>a/b, '×':(a,b)=>a*b, '-':(a,b)=>a-b, '+':(a,b)=>a+b};
+      const res = ops[s.op](s.prev, cur);
+      s.expr = `${s.prev} ${s.op} ${cur} =`;
+      s.v = String(parseFloat(res.toFixed(10)));
+      s.op=null; s.prev=null; s.resetNext=true;
+    }
+  } else if(btn==='.'){
+    if(s.resetNext){ s.v='0.'; s.resetNext=false; }
+    else if(!s.v.includes('.')) s.v+='.';
+  } else {
+    if(s.resetNext || s.v==='0'){ s.v=btn; s.resetNext=false; }
+    else s.v+=btn;
+  }
+  document.getElementById('d-val').textContent  = s.v;
+  document.getElementById('d-expr').textContent = s.expr;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F04 — SESSION MONITOR (V4 lógica · V5 session-badge)
+════════════════════════════════════════════════════════════════════ */
+let _sessionInterval = null;
+function startSessionMonitor(){
+  stopSessionMonitor();
+  _sessionInterval = setInterval(() => {
+    if(S.locked) return;
+    const now = Date.now();
+    const inactive = now - S.lastActivity;
+    const remain   = CFG.SESSION_TIMEOUT - inactive;
+    const badge    = document.getElementById('session-badge');
+    if(remain > 0){
+      if(remain < 120000){
+        const tm = Math.floor(remain/60000);
+        const ts = String(Math.floor((remain%60000)/1000)).padStart(2,'0');
+        if(badge){ badge.textContent=`Sessão expira em ${tm}:${ts}`; badge.classList.add('warn'); badge.style.opacity='1'; }
+      }
+    } else {
+      lockApp(); UI.toast('⏻ Auto-bloqueado por inatividade','w',5000);
+    }
+    checkTTLExpiry();
+  }, 1000);
+}
+function stopSessionMonitor(){ if(_sessionInterval){ clearInterval(_sessionInterval); _sessionInterval=null; } }
+function bump(){
+  if(!S.locked){
+    S.lastActivity = Date.now();
+    const badge = document.getElementById('session-badge');
+    if(badge && badge.classList.contains('warn')){ badge.classList.remove('warn'); badge.style.opacity='0'; }
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F06 — RENDER NOTES (V5 cards + dados V4: pin, TTL, categoria)
+════════════════════════════════════════════════════════════════════ */
+function renderNotes(){
+  const grid      = document.getElementById('notes-grid');
+  const emptyEl   = document.getElementById('empty-state');
+  const emptyTitle= document.getElementById('empty-title');
+  const emptySub  = document.getElementById('empty-sub');
+
+  let notes = S.viewMode==='trash'
+    ? S.notes.filter(n=>n.deleted)
+    : S.notes.filter(n=>!n.deleted);
+
+  const q = S.filterQuery;
+  if(q) notes = notes.filter(n => n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q));
+
+  if(!notes.length){
+    grid.innerHTML = '';
+    emptyEl.classList.add('show');
+    if(S.viewMode==='trash'){ emptyTitle.textContent='Lixeira vazia'; emptySub.textContent=''; }
+    else if(q){ emptyTitle.textContent='Nenhum resultado'; emptySub.textContent=`Busca por "${q}"`; }
+    else { emptyTitle.textContent='Cofre vazio'; emptySub.textContent='Toque em + para criar sua primeira nota segura.'; }
+    return;
+  }
+  emptyEl.classList.remove('show');
+
+  /* ── TRASH VIEW ── */
+  if(S.viewMode==='trash'){
+    notes.sort((a,b)=>(b.deletedAt||0)-(a.deletedAt||0));
+    grid.innerHTML = notes.map((note,i) => {
+      const daysLeft = note.deletedAt
+        ? Math.max(0, CFG.TRASH_TTL_DAYS - Math.floor((Date.now()-note.deletedAt)/86400000))
+        : CFG.TRASH_TTL_DAYS;
+      return `<div class="note-card deleted-card" role="listitem" style="animation-delay:${Math.min(i*35,280)}ms">
+        <div class="note-card-title" style="opacity:.65;">🗑 ${_esc(note.title||'(sem título)')}</div>
+        <div class="note-card-footer">
+          <div class="note-card-footer-left"><span class="note-card-date">Expira em ${daysLeft}d</span></div>
+          <div style="display:flex;gap:4px;flex-shrink:0;">
+            <button class="note-card-delete note-card-action" onclick="event.stopPropagation();restoreNote('${note.id}')" title="Restaurar" style="color:var(--md-sys-color-primary);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="note-card-delete note-card-action" onclick="event.stopPropagation();permanentDeleteConfirm('${note.id}')" title="Destruir permanentemente">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  /* ── NOTES VIEW: sort + pin ── */
+  let sorted = [...notes];
+  if(S.sortOrder==='alpha')   sorted.sort((a,b)=>(a.title||'').localeCompare(b.title||'','pt'));
+  else if(S.sortOrder==='oldest') sorted.sort((a,b)=>a.createdAt-b.createdAt);
+  else sorted.sort((a,b)=>b.updatedAt-a.updatedAt);
+  const ordered = [...sorted.filter(n=>n.pinned), ...sorted.filter(n=>!n.pinned)];
+
+  grid.innerHTML = ordered.map((note,i) => {
+    const colorAttr = note.color ? `data-color="${note.color}"` : '';
+    const pinBadge  = note.pinned ? '<span style="font-size:11px;margin-right:2px;">📌</span>' : '';
+
+    let ttlHtml = '';
+    if(note.ttl){
+      const rem = note.ttl - Date.now();
+      if(rem<=0) ttlHtml = '<span class="ttl-badge crit">☢ Expirado</span>';
+      else {
+        const h=Math.floor(rem/3600000), m=Math.floor((rem%3600000)/60000);
+        ttlHtml = `<span class="ttl-badge${rem<3600000?' crit':''}">⏱ ${h}h${String(m).padStart(2,'0')}m</span>`;
+      }
+    }
+    const catBadge = note.category && note.category!=='GERAL'
+      ? `<span class="cat-badge">${_esc(note.category)}</span>` : '';
+    const titleHtml   = note.title   ? `<div class="note-card-title">${pinBadge}${_esc(note.title)}</div>` : '';
+    const previewHtml = note.content ? `<div class="note-card-preview">${_esc(note.content)}</div>` : '';
+
+    return `<div class="note-card" ${colorAttr} role="listitem"
+      style="animation-delay:${Math.min(i*35,280)}ms"
+      onclick="openNote('${note.id}')" tabindex="0"
+      onkeydown="if(event.key==='Enter'||event.key===' ')openNote('${note.id}')"
+      aria-label="Nota: ${_esc(note.title||'Sem título')}">
+      ${titleHtml}${previewHtml}
+      <div class="note-card-footer">
+        <div class="note-card-footer-left">
+          <span class="note-card-date">${_fmtDate(note.updatedAt)}</span>${catBadge}${ttlHtml}
+        </div>
+        <button class="note-card-delete" onclick="event.stopPropagation();confirmTrashNote('${note.id}')" title="Excluir">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+          </svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F05 — NOTE CRUD (V4 crypto · V5 DOM IDs)
+════════════════════════════════════════════════════════════════════ */
+function newNote(){
+  const id=uid(), now=Date.now();
+  const n={id, title:'', content:'', createdAt:now, updatedAt:now,
+    ttl:null, category:'GERAL', pinned:false, deleted:false, deletedAt:null, color:null};
+  S.notes.unshift(n); S.currentId=id;
+  openEditorWithNote(n); bump();
+}
+
+function openNote(id){
+  const n = S.notes.find(x=>x.id===id);
+  if(!n || n.deleted) return;
+  S.currentId=id; openEditorWithNote(n); bump();
+}
+
+/* F07 — EDITOR: ABRIR (V5 DOM + V4 data) */
+function openEditorWithNote(note){
+  if(_autoSaveTimer){ clearTimeout(_autoSaveTimer); _autoSaveTimer=null; }
+  if(_previewMode) _exitPreview();
+
+  document.getElementById('editor-title').value  = note.title||'';
+  document.getElementById('editor-content').value= note.content||'';
+  _editorColor = note.color||null;
+  _syncEditorColorDots();
+  _updateEditorCharCount();
+
+  const ttlSel = document.getElementById('ttl-sel');
+  ttlSel.value = '';
+  if(note.ttl){
+    const rem = note.ttl - Date.now();
+    for(const opt of ttlSel.options)
+      if(opt.value && parseInt(opt.value) >= rem){ ttlSel.value=opt.value; break; }
+  }
+
+  document.getElementById('editor-meta-date').textContent =
+    note.updatedAt > note.createdAt ? `Editada ${_fmtDate(note.updatedAt)}` : 'Nova nota';
+  document.getElementById('btn-editor-delete').style.visibility =
+    (!note.title && !note.content) ? 'hidden' : 'visible';
+
+  _updatePinBtn();
+  App.navigate('editor');
+  setTimeout(() => document.getElementById('editor-title').focus(), 380);
+}
+
+/* F05-A: SALVAR AES-256-GCM (V4 — INTOCADO, V5 campos) */
+async function saveNote(silent=false){
+  if(!S.currentId || S.locked) return;
+  const idx = S.notes.findIndex(n=>n.id===S.currentId);
+  if(idx===-1) return;
+  const title   = document.getElementById('editor-title').value.trim() || '(sem título)';
+  const content = document.getElementById('editor-content').value;
+  const ttlRaw  = document.getElementById('ttl-sel').value;
+  const ttl     = ttlRaw ? Date.now()+parseInt(ttlRaw) : null;
+  const now     = Date.now();
+  S.notes[idx]  = {...S.notes[idx], title, content, updatedAt:now, ttl, color:_editorColor};
+  const n = S.notes[idx];
+  await DB.put({
+    id:S.currentId,
+    title:   await CryptoEngine.encrypt(title, S.key),
+    content: await CryptoEngine.encrypt(content, S.key),
+    createdAt:n.createdAt, updatedAt:now, ttl,
+    category:n.category||'GERAL', pinned:n.pinned||false,
+    deleted:n.deleted||false, deletedAt:n.deletedAt||null,
+    color:_editorColor||null,
+  });
+  renderNotes();
+  if(!silent){
+    UI.toast('✓ Cifrado e salvo — AES-256-GCM');
+    const btn = document.getElementById('btn-editor-save');
+    btn?.classList.add('active-state'); setTimeout(()=>btn?.classList.remove('active-state'),400);
+  } else {
+    const ind = document.getElementById('autosave-indicator');
+    if(ind){ ind.style.opacity='1'; setTimeout(()=>{ ind.style.opacity='0'; },2200); }
+  }
+  document.getElementById('editor-meta-date').textContent = `Salva ${_fmtDate(now)}`;
+  document.getElementById('btn-editor-delete').style.visibility = 'visible';
+  bump();
+}
+
+/* F05-B: TRASH (V4 soft delete) */
+async function trashNote(id){
+  if(!id || S.locked) return;
+  const idx = S.notes.findIndex(n=>n.id===id);
+  if(idx===-1) return;
+  const now = Date.now();
+  S.notes[idx] = {...S.notes[idx], deleted:true, deletedAt:now};
+  const n = S.notes[idx];
+  await DB.put({
+    id:n.id,
+    title:   await CryptoEngine.encrypt(n.title, S.key),
+    content: await CryptoEngine.encrypt(n.content, S.key),
+    createdAt:n.createdAt, updatedAt:n.updatedAt, ttl:n.ttl,
+    category:n.category, pinned:n.pinned, deleted:true, deletedAt:now,
+    color:n.color||null,
+  });
+  if(S.currentId===id) UI.closeEditor();
+  renderNotes(); UI.toast('🗑 Nota movida para a lixeira (7 dias)'); bump();
+}
+
+function trashCurrentNote(){
+  Modals.closeDelete();
+  if(!S.currentId) return;
+  trashNote(S.currentId);
+  App.navigate('vault');
+}
+
+function confirmTrashNote(id){
+  confirm2('🗑 Mover para a lixeira',
+    'A nota será movida para a lixeira e destruída permanentemente após 7 dias.',
+    () => trashNote(id));
+}
+
+/* F05-C: RESTORE */
+async function restoreNote(id){
+  const idx = S.notes.findIndex(n=>n.id===id); if(idx===-1) return;
+  S.notes[idx] = {...S.notes[idx], deleted:false, deletedAt:null};
+  const n = S.notes[idx];
+  await DB.put({
+    id:n.id,
+    title:   await CryptoEngine.encrypt(n.title, S.key),
+    content: await CryptoEngine.encrypt(n.content, S.key),
+    createdAt:n.createdAt, updatedAt:n.updatedAt, ttl:n.ttl,
+    category:n.category, pinned:n.pinned, deleted:false, deletedAt:null, color:n.color||null,
+  });
+  renderNotes(); UI.toast('✓ Nota restaurada da lixeira'); bump();
+}
+
+/* F05-D: PERMANENT DELETE (V4 secure wipe) */
+async function permanentDelete(id){
+  await DB.secureDelete(id);
+  S.notes = S.notes.filter(n=>n.id!==id);
+  renderNotes(); UI.toast('☢ Nota destruída com sobrescrita segura'); bump();
+}
+function permanentDeleteConfirm(id){
+  confirm2('☢ Destruir permanentemente',
+    'O registro será sobrescrito com dados aleatórios. IRREVERSÍVEL.',
+    () => permanentDelete(id));
+}
+
+/* F13: CLEANUP TRASH (V4 — INTOCADO) */
+async function cleanupTrash(){
+  const threshold = CFG.TRASH_TTL_DAYS*24*60*60*1000;
+  const expired = S.notes.filter(n => n.deleted && n.deletedAt && (Date.now()-n.deletedAt>=threshold));
+  for(const n of expired){ await DB.secureDelete(n.id); S.notes=S.notes.filter(x=>x.id!==n.id); }
+  if(expired.length) UI.toast(`☢ ${expired.length} nota(s) da lixeira destruídas automaticamente`,'w',5000);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F10 — PIN (V4 lógica · V5 ícone)
+════════════════════════════════════════════════════════════════════ */
+async function togglePinNote(){
+  if(!S.currentId || S.locked) return;
+  const idx = S.notes.findIndex(n=>n.id===S.currentId); if(idx===-1) return;
+  const newPin = !S.notes[idx].pinned;
+  S.notes[idx] = {...S.notes[idx], pinned:newPin};
+  const n = S.notes[idx];
+  await DB.put({
+    id:n.id,
+    title:   await CryptoEngine.encrypt(n.title, S.key),
+    content: await CryptoEngine.encrypt(n.content, S.key),
+    createdAt:n.createdAt, updatedAt:n.updatedAt, ttl:n.ttl,
+    category:n.category, pinned:newPin, deleted:n.deleted, deletedAt:n.deletedAt, color:n.color||null,
+  });
+  _updatePinBtn(); renderNotes();
+  UI.toast(newPin ? '📌 Nota fixada no topo' : '📌 Nota desafixada');
+  bump();
+}
+function _updatePinBtn(){
+  const n = S.notes.find(x=>x.id===S.currentId);
+  const btn = document.getElementById('btn-editor-pin');
+  if(!btn) return;
+  const pinned = n?.pinned||false;
+  btn.style.color = pinned ? 'var(--md-sys-color-primary)' : '';
+  btn.setAttribute('aria-pressed', String(pinned));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   COLOR DOTS (V5)
+════════════════════════════════════════════════════════════════════ */
+function setEditorColor(c){
+  _editorColor = c==='none' ? null : c;
+  _syncEditorColorDots();
+  scheduleAutoSave(); bump();
+}
+function _syncEditorColorDots(){
+  document.querySelectorAll('.color-dot').forEach(dot => {
+    const dc = dot.dataset.c;
+    dot.classList.toggle('active', (dc==='none' && !_editorColor) || dc===_editorColor);
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   SECURITY — sanitizeHTML (Fase 3 · XSS hardening)
+   Usa DOMParser para parsear num documento isolado (scripts não executam).
+   Percorre a árvore e remove tags bloqueadas + atributos maliciosos.
+   Nunca usa apenas Regex — trivialmente contornável.
+════════════════════════════════════════════════════════════════════ */
+function sanitizeHTML(dirtyStr) {
+  const BLOCKED_TAGS = new Set([
+    'script','iframe','object','embed','applet',
+    'meta','base','link','style','noscript','svg','math'
+  ]);
+
+  // Parseia numa árvore DOM completamente isolada — zero execução
+  const doc = new DOMParser().parseFromString(dirtyStr, 'text/html');
+
+  // Coleta todos os nós de uma vez (evita mutação durante iteração)
+  const allNodes = [...doc.body.querySelectorAll('*')];
+
+  for (const node of allNodes) {
+    // Remove nó inteiro (e descendentes) se tag for bloqueada
+    if (BLOCKED_TAGS.has(node.tagName.toLowerCase())) {
+      node.remove();
+      continue;
+    }
+
+    // Itera sobre cópia dos atributos — pode remover durante o loop
+    for (const attr of [...node.attributes]) {
+      const name  = attr.name.toLowerCase();
+      const value = attr.value.toLowerCase().replace(/\s/g, '');
+
+      // Remove todos os event handlers: onclick, onerror, onload, etc.
+      if (name.startsWith('on')) { node.removeAttribute(attr.name); continue; }
+
+      // Remove href/src/action/formaction/data com protocolo perigoso
+      if (['href','src','action','formaction','data'].includes(name)) {
+        if (value.startsWith('javascript:') || value.startsWith('vbscript:')) {
+          node.removeAttribute(attr.name); continue;
+        }
+      }
+
+      // Remove srcdoc (vetor de injeção mesmo sem iframe directo)
+      if (name === 'srcdoc') { node.removeAttribute(attr.name); continue; }
+    }
+  }
+
+  return doc.body.innerHTML;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F08 — MARKDOWN PREVIEW (V4 engine — INTOCADO)
+════════════════════════════════════════════════════════════════════ */
+function togglePreviewMode(){ _previewMode ? _exitPreview() : _enterPreview(); }
+function _enterPreview(){
+  _previewMode = true;
+  const preview  = document.getElementById('md-preview');
+  const textarea = document.getElementById('editor-content');
+  const btn      = document.getElementById('btn-editor-preview');
+  preview.innerHTML = sanitizeHTML(renderMarkdown(textarea.value));
+  preview.classList.add('active');
+  textarea.style.display = 'none';
+  if(btn) btn.style.color = 'var(--md-sys-color-primary)';
+}
+function _exitPreview(){
+  _previewMode = false;
+  const preview  = document.getElementById('md-preview');
+  const textarea = document.getElementById('editor-content');
+  const btn      = document.getElementById('btn-editor-preview');
+  preview.classList.remove('active'); preview.innerHTML='';
+  textarea.style.display = '';
+  if(btn) btn.style.color = '';
+}
+
+function renderMarkdown(raw){
+  const saved=[];
+  const save=s=>{const k=`\x02${saved.length}\x03`;saved.push(s);return k;};
+  let t=raw;
+  t=t.replace(/```[\w]*\n?([\s\S]*?)```/g,(_,code)=>save(
+    `<pre><code>${code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').trim()}</code></pre>`));
+  t=t.replace(/`([^`\n]+)`/g,(_,c)=>save(
+    `<code>${c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code>`));
+  t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  t=t.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  t=t.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  t=t.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  t=t.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  t=t.replace(/^[-*]{3,}$/gm,'<hr>');
+  t=t.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
+  t=t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  t=t.replace(/\*([^*\n]+?)\*/g,'<em>$1</em>');
+  t=t.replace(/__(.+?)__/g,'<strong>$1</strong>');
+  t=t.replace(/_([^_\n]+?)_/g,'<em>$1</em>');
+  t=t.replace(/((?:^[-*+] .+(?:\n|$))+)/gm,match=>{
+    const items=match.trim().split('\n').map(l=>`<li>${l.replace(/^[-*+] /,'')}</li>`).join('');
+    return`<ul>${items}</ul>`;});
+  t=t.replace(/((?:^\d+\. .+(?:\n|$))+)/gm,match=>{
+    const items=match.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}</li>`).join('');
+    return`<ol>${items}</ol>`;});
+  t=t.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  const blockRe=/^(<h[1-6]|<ul|<ol|<hr|<pre|<blockquote)/;
+  t=t.split(/\n{2,}/).map(b=>{
+    const tr=b.trim(); if(!tr) return '';
+    return blockRe.test(tr)?tr:`<p>${tr.replace(/\n/g,'<br>')}</p>`;
+  }).join('\n');
+  t=t.replace(/\x02(\d+)\x03/g,(_,i)=>saved[+i]);
+  return t;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F09 — AUTO-SAVE (V4 — INTOCADO) — 2s debounce
+════════════════════════════════════════════════════════════════════ */
+function scheduleAutoSave(){
+  if(_autoSaveTimer) clearTimeout(_autoSaveTimer);
+  _autoSaveTimer = setTimeout(async()=>{
+    _autoSaveTimer=null;
+    if(!S.currentId || S.locked) return;
+    await saveNote(true);
+  }, 2000);
+}
+function _updateEditorCharCount(){
+  const el=document.getElementById('editor-meta-chars');
+  const content=document.getElementById('editor-content');
+  if(!el||!content) return;
+  const len=content.value.length;
+  const words=content.value.trim()?content.value.trim().split(/\s+/).length:0;
+  el.textContent=`${len} chars · ${words} palavras`;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F10 — CLIPBOARD AUTO-CLEAR (V4 — INTOCADO)
+════════════════════════════════════════════════════════════════════ */
+async function copyNoteContent(){
+  const content = document.getElementById('editor-content').value;
+  if(!content){ UI.toast('Nada para copiar','w'); return; }
+  try {
+    await navigator.clipboard.writeText(content);
+    clearClipState();
+    let rem = Math.floor(CFG.CLIP_CLEAR_MS/1000);
+    UI.toast(`✓ Copiado — clipboard limpa em ${rem}s`);
+    S.clipInterval = setInterval(async()=>{
+      rem--;
+      if(rem<=0){
+        clearClipState();
+        try { await navigator.clipboard.writeText(''); } catch{}
+        UI.toast('📋 Clipboard limpa automaticamente');
+      }
+    }, 1000);
+    bump();
+  } catch { UI.toast('Permissão de clipboard negada','e'); }
+}
+function clearClipState(){
+  if(S.clipInterval){ clearInterval(S.clipInterval); S.clipInterval=null; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F11 — EXPORT / IMPORT (V4 — INTOCADO)
+════════════════════════════════════════════════════════════════════ */
+function openExportModal(){ openModal('modal-export'); }
+function openImportModal(){ openModal('modal-import'); }
+
+async function doExport(){
+  try {
+    const records  = await DB.getAll();
+    const salt     = await DB.getMeta('salt');
+    const verifier = await DB.getMeta('verifier');
+    const payload  = {_ghostpad:true, version:3, exported:new Date().toISOString(), salt, verifier, notes:records};
+    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const fname= (document.getElementById('exp-fname').value||'ghostpad_vault').trim();
+    const a=document.createElement('a'); a.href=url; a.download=`${fname}_${Date.now()}.json`; a.click();
+    URL.revokeObjectURL(url);
+    closeModal('modal-export');
+    UI.toast(`✓ Cofre exportado — ${records.length} nota(s)`);
+  } catch(e){ UI.toast('Erro ao exportar: '+e.message,'e'); }
+}
+
+async function doImport(){
+  const file = document.getElementById('imp-file').files[0];
+  if(!file){ UI.toast('Selecione um arquivo','w'); return; }
+  try {
+    const payload = JSON.parse(await file.text());
+    if(!payload._ghostpad || payload.version<2) throw new Error('Arquivo inválido ou versão incompatível');
+    let impKey = S.key;
+    let impHmacKey = S.hmacKey;
+    const impPwd = document.getElementById('imp-pwd').value;
+    if(impPwd){
+      const impSalt = CryptoEngine.b64dec(payload.salt);
+      const derived = await CryptoEngine.deriveKeys(impPwd, impSalt);
+      impKey = derived.aesKey; impHmacKey = derived.hmacKey;
+      if(!await CryptoEngine.checkVerifier(payload.verifier, impHmacKey, impKey))
+        throw new Error('Senha do arquivo incorreta');
+    }
+    let count=0;
+    for(const rec of payload.notes){
+      try{
+        if(impPwd && impKey!==S.key){
+          const t = await CryptoEngine.decrypt(rec.title, impKey);
+          const c = await CryptoEngine.decrypt(rec.content, impKey);
+          await DB.put({...rec, title:await CryptoEngine.encrypt(t,S.key), content:await CryptoEngine.encrypt(c,S.key)});
+        } else { await DB.put(rec); }
+        count++;
+      } catch {/* skip corrupt */}
+    }
+    S.notes = await loadAndDecrypt(S.key);
+    renderNotes(); closeModal('modal-import');
+    UI.toast(`✓ ${count} nota(s) importada(s) com sucesso`);
+  } catch(e){ UI.toast('Erro: '+e.message,'e'); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F12 — TTL AUTO-DESTRUCTION (V4 — INTOCADO)
+════════════════════════════════════════════════════════════════════ */
+async function checkTTLExpiry(){
+  const now = Date.now();
+  const expired = S.notes.filter(n => !n.deleted && n.ttl && n.ttl<=now);
+  for(const n of expired){
+    await DB.secureDelete(n.id); S.notes=S.notes.filter(x=>x.id!==n.id);
+    if(S.currentId===n.id) App.navigate('vault');
+    UI.toast(`☢ Nota auto-destruída: "${(n.title||'?').slice(0,24)}"`, 'w', 6000);
+  }
+  if(expired.length) renderNotes();
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F13 — VIEW SWITCHER (V4 lógica · V5 tabs)
+════════════════════════════════════════════════════════════════════ */
+function switchView(view){
+  S.viewMode = view;
+  document.getElementById('tab-notes').classList.toggle('active', view==='notes');
+  document.getElementById('tab-trash').classList.toggle('active', view==='trash');
+  renderNotes(); bump();
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F14 — RECOVERY (V4 — INTOCADO)
+   Ícone → 5 cliques → modal recuperação
+════════════════════════════════════════════════════════════════════ */
+let _eyeCount=0, _eyeTimer=null;
+function authIconClick(){
+  _eyeCount++;
+  if(_eyeTimer) clearTimeout(_eyeTimer);
+  if(_eyeCount>=5){ _eyeCount=0; openRecoveryModal(); return; }
+  _eyeTimer = setTimeout(()=>{ _eyeCount=0; }, 2000);
+}
+
+function openRecoveryModal(){
+  document.getElementById('rec-master-key').value='';
+  document.getElementById('rec-master-error').textContent='';
+  openModal('modal-recovery');
+}
+
+async function doMasterKeyBypass(){
+  /* Fase 2 — Porta dos fundos removida.
+     MASTER_PASSPHRASE foi eliminada do CFG. Este bypass deixou de existir.
+     A única forma de recuperação agora é a Opção B (Hard Reset). */
+  const errEl = document.getElementById('rec-master-error');
+  errEl.textContent = '✕ Funcionalidade desativada — use o Hard Reset (Opção B)';
+  document.getElementById('rec-master-key').value = '';
+}
+
+function doHardReset(){
+  closeModal('modal-recovery');
+  document.getElementById('reset-confirm-input').value='';
+  openModal('modal-reset-confirm');
+}
+
+async function executeHardReset(){
+  const inp = document.getElementById('reset-confirm-input').value.trim().toUpperCase();
+  if(inp!=='CONFIRMAR RESET'){ UI.toast('Digite "CONFIRMAR RESET" para confirmar','e'); return; }
+  try{
+    await new Promise((ok,fail)=>{
+      const req=indexedDB.deleteDatabase(CFG.DB_NAME);
+      req.onsuccess=()=>ok(); req.onerror=()=>fail(req.error);
+    });
+    closeModal('modal-reset-confirm');
+    UI.toast('☢ Banco deletado. A página vai recarregar em 3s…','e',5000);
+    setTimeout(()=>location.reload(), 3000);
+  } catch(e){ UI.toast('Erro ao deletar banco: '+e.message,'e'); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F15 — SETTINGS: TEMA / COR (V5 — INTOCADO)
+   injectAndroidDynamicColors() pronto para WebView Material You.
+════════════════════════════════════════════════════════════════════ */
+const Settings = {
+  toggleDarkMode(){
+    const root   = document.documentElement;
+    const isDark = root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme', isDark?'light':'dark');
+    const sw = document.getElementById('switch-dark-mode');
+    if(sw){ sw.classList.toggle('on',!isDark); sw.setAttribute('aria-checked',String(!isDark)); }
+    localStorage.setItem('gpad_theme', isDark?'light':'dark');
+  },
+  applyColor(hex){
+    /* V5 — INTOCADO: injeta cor dinâmica Material You */
+    const root = document.documentElement;
+    root.style.setProperty('--md-sys-color-primary', hex);
+    root.style.setProperty('--md-sys-color-on-primary','#FFFFFF');
+    root.style.setProperty('--md-sys-color-primary-container', hex+'2A');
+    root.style.setProperty('--md-sys-color-on-primary-container', hex);
+    localStorage.setItem('gpad_color', hex);
+  },
+  init(){
+    const savedTheme = localStorage.getItem('gpad_theme');
+    if(savedTheme){
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const sw = document.getElementById('switch-dark-mode');
+      if(sw){ const dark=savedTheme==='dark'; sw.classList.toggle('on',dark); sw.setAttribute('aria-checked',String(dark)); }
+    }
+    const savedColor = localStorage.getItem('gpad_color');
+    if(savedColor){
+      Settings.applyColor(savedColor);
+      const cp = document.getElementById('color-picker'); if(cp) cp.value=savedColor;
+    }
+    if(typeof AndroidBridge !== 'undefined') injectAndroidDynamicColors();
+  },
+};
+
+/* ════════════════════════════════════════════════════════════════════
+   ANDROID DYNAMIC COLORS BRIDGE (V5 — INTOCADO)
+   Conecta WebView ao Material You real quando rodando como APK.
+════════════════════════════════════════════════════════════════════ */
+function injectAndroidDynamicColors(){
+  try{
+    const colors = JSON.parse(AndroidBridge.getDynamicColors());
+    const root   = document.documentElement;
+    Object.entries(colors).forEach(([k,v])=>root.style.setProperty(k,v));
+    console.log('[Nox] Material You colors injected from Android');
+  } catch(e){
+    console.log('[Nox] Android bridge unavailable, using default palette');
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   F17 — CHANGE PASSWORD (V4 — re-criptografa todo o cofre)
+════════════════════════════════════════════════════════════════════ */
+async function changePassword(){
+  const newPwd  = document.getElementById('new-pwd').value;
+  const newPwd2 = document.getElementById('new-pwd2').value;
+  const errEl   = document.getElementById('new-pwd-err');
+  if(!newPwd){ errEl.textContent='Senha obrigatória'; return; }
+  if(newPwd.length<8){ errEl.textContent='Mínimo 8 caracteres'; return; }
+  if(newPwd!==newPwd2){ errEl.textContent='As senhas não coincidem'; return; }
+  errEl.textContent='';
+  const btn = document.getElementById('btn-change-pwd');
+  btn.disabled=true; btn.textContent='Re-criptografando…';
+  try{
+    const salt      = CryptoEngine.rand(CFG.SALT_LEN);
+    const saltB64   = CryptoEngine.b64enc(salt);
+    const { aesKey: newKey, hmacKey: newHmacKey } = await CryptoEngine.deriveKeys(newPwd, salt);
+    const verifier  = await CryptoEngine.makeVerifier(newHmacKey);
+    for(const n of S.notes){
+      if(n.deleted) continue;
+      await DB.put({
+        id:n.id,
+        title:   await CryptoEngine.encrypt(n.title, newKey),
+        content: await CryptoEngine.encrypt(n.content, newKey),
+        createdAt:n.createdAt, updatedAt:n.updatedAt, ttl:n.ttl,
+        category:n.category, pinned:n.pinned, deleted:n.deleted, deletedAt:n.deletedAt, color:n.color||null,
+      });
+    }
+    await DB.setMeta('salt', saltB64);
+    await DB.setMeta('verifier', verifier);
+    S.key = newKey; S.hmacKey = newHmacKey;
+    Modals.closeChangePwd();
+    UI.toast('✓ Senha alterada — cofre re-criptografado com nova chave AES','s',5000);
+  } catch(e){
+    errEl.textContent='Erro: '+e.message;
+  } finally{
+    btn.disabled=false; btn.textContent='Salvar e re-criptografar';
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   MODALS HELPER
+════════════════════════════════════════════════════════════════════ */
+
+/* ▼ FIX BACK BUTTON: openModal empilha uma entrada de histórico para que
+   o botão Voltar do Android feche o modal sem sair da tela atual. */
+function openModal(id){
+  document.getElementById(id)?.classList.add('active');
+  history.pushState({gpad:'modal', id}, '');
+}
+
+const Modals = {
+  openSettings(){ openModal('modal-settings'); },
+  closeSettings(){ document.getElementById('modal-settings').classList.remove('active'); },
+  openChangePwd(){
+    document.getElementById('new-pwd').value='';
+    document.getElementById('new-pwd2').value='';
+    document.getElementById('new-pwd-err').textContent='';
+    Modals.closeSettings();
+    openModal('modal-change-pwd');
+  },
+  closeChangePwd(){ document.getElementById('modal-change-pwd').classList.remove('active'); },
+  confirmDelete(){ openModal('modal-delete'); },
+  closeDelete(){ document.getElementById('modal-delete').classList.remove('active'); },
+};
+
+function confirm2(title, msg, onOk){
+  document.getElementById('mc-title').textContent = title;
+  document.getElementById('mc-msg').textContent   = msg;
+  const btn = document.getElementById('mc-ok');
+  btn.onclick = () => { closeModal('modal-confirm'); onOk(); };
+  openModal('modal-confirm');
+}
+
+/* ▼ FIX BACK BUTTON: ao fechar modal via botão (não via back),
+   verifica se a entry de histórico atual é deste modal e a remove. */
+function closeModal(id){
+  document.getElementById(id)?.classList.remove('active');
+  if(history.state?.gpad === 'modal' && history.state?.id === id){
+    history.back();
+  }
+}
+
+function confirmNuke(){
+  confirm2('☢ Destruir todo o cofre',
+    'TODAS as notas serão sobrescritas com dados aleatórios e deletadas permanentemente. IRREVERSÍVEL.',
+    async()=>{
+      if(!S.key){ UI.toast('Cofre bloqueado','e'); return; }
+      try{
+        for(const n of S.notes) await DB.secureDelete(n.id);
+        await DB.clearAll();
+        S.notes=[]; S.currentId=null;
+        renderNotes(); App.navigate('vault');
+        UI.toast('☢ Cofre destruído com sobrescrita segura','e',6000);
+      } catch(e){ UI.toast('Erro: '+e.message,'e'); }
+    });
+}
+
+function closeCurrentEditor(){
+  if(_autoSaveTimer){ clearTimeout(_autoSaveTimer); _autoSaveTimer=null; }
+  if(_previewMode) _exitPreview();
+  S.currentId = null;
+  App.navigate('vault');
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   SEARCH
+════════════════════════════════════════════════════════════════════ */
+function clearSearch(){
+  const input    = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear');
+  input.value=''; clearBtn.style.display='none';
+  S.filterQuery=''; renderNotes(); input.focus(); bump();
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   UTILS (V4 — INTOCADOS)
+════════════════════════════════════════════════════════════════════ */
+function uid(){
+  return crypto.randomUUID?.() ?? 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+    const r=Math.random()*16|0; return(c==='x'?r:(r&3|8)).toString(16);
+  });
+}
+function _fmtDate(ts){
+  if(!ts) return '—';
+  return new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+}
+function _esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ════════════════════════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS (V4 — intactos)
+   Ctrl+S → salvar | Ctrl+L → bloquear | Ctrl+N → nova nota
+   Ctrl+Shift+P → pânico | Ctrl+Enter → preview | ESC×3 → pânico
+════════════════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  bump();
+  if(e.ctrlKey && e.key==='s' && App.current==='editor'){
+    e.preventDefault(); saveNote(false); return;
+  }
+  if(e.ctrlKey && e.key==='l'){ e.preventDefault(); lockApp(); return; }
+  if(e.ctrlKey && e.key==='n' && App.current!=='auth'){ e.preventDefault(); newNote(); return; }
+  if(e.ctrlKey && e.shiftKey && e.key==='P'){ e.preventDefault(); triggerPanic(); return; }
+  if(e.ctrlKey && e.key==='Enter' && App.current==='editor'){ e.preventDefault(); togglePreviewMode(); return; }
+
+  /* ── ESC PANIC COUNTER (V4 — INTOCADO) ──────────────────────
+     3× ESC dentro de 1500ms → triggerPanic()
+     1× ESC no editor (sem panic) → closeCurrentEditor()
+  ─────────────────────────────────────────────────────────── */
+  if(e.key === CFG.PANIC_KEY){
+    _panicCount++;
+    if(_panicTimer) clearTimeout(_panicTimer);
+    if(_panicCount >= CFG.PANIC_COUNT){
+      _panicCount=0; clearTimeout(_panicTimer);
+      triggerPanic(); return;
+    }
+    _panicTimer = setTimeout(()=>{
+      if(_panicCount===1 && App.current==='editor') closeCurrentEditor();
+      _panicCount=0;
+    }, CFG.PANIC_WINDOW_MS);
+  }
+
+  /* ── DECOY KEYBOARD (V4 — INTOCADO) ─────────────────────── */
+  if(_inPanicMode){
+    const map = {'0':'0','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9',
+      'Enter':'=','=':'=','+':'+','-':'-','*':'×','/':'÷','%':'%','.':'.',',':'.','Backspace':'AC'};
+    const btn = map[e.key];
+    if(btn){ e.preventDefault(); dc(btn); }
+    if(e.key==='Escape') releasePanic();
+    return;
+  }
+}, {passive:false});
+
+/* Decoy: dblclick → releasePanic (V4 — INTOCADO) */
+document.getElementById('decoy').addEventListener('dblclick', ()=>releasePanic());
+
+/* ════════════════════════════════════════════════════════════════════
+   NOX — AUTO-LOCK: visibilitychange + window blur
+   Ao minimizar/ocultar o app:
+     1. Aplica desfoque imediato na UI (body.app-blurred)
+     2. Inicia timer de 2 minutos
+     3. Ao expirar → lockApp() (chave já some do RAM via lockApp)
+   Ao retornar antes do timer → cancela e remove o blur.
+════════════════════════════════════════════════════════════════════ */
+const NOX_AUTO_LOCK_MS = 2 * 60 * 1000; // 2 minutos
+let _autoLockTimer = null;
+let _blurActive = false;
+
+function _startAutoLockTimer(){
+  if(S.locked || _inPanicMode) return; // já bloqueado ou em panic → nada a fazer
+  _cancelAutoLockTimer(false);         // cancela timer anterior sem remover blur
+  // Aplica blur visual imediatamente para ocultar conteúdo sensível
+  document.body.classList.add('app-blurred');
+  _blurActive = true;
+  _autoLockTimer = setTimeout(()=>{
+    _autoLockTimer = null;
+    lockApp();
+    UI.snack('⏻ Auto-bloqueado por inatividade (minimizado)', 5000);
+  }, NOX_AUTO_LOCK_MS);
+}
+
+function _cancelAutoLockTimer(removeBlur = true){
+  if(_autoLockTimer){ clearTimeout(_autoLockTimer); _autoLockTimer = null; }
+  if(removeBlur && _blurActive){
+    document.body.classList.remove('app-blurred');
+    _blurActive = false;
+  }
+}
+
+/* visibilitychange: acionado ao minimizar / trocar de aba / desligar tela */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'hidden'){
+    _startAutoLockTimer();
+  } else {
+    // App voltou ao foco antes de expirar
+    _cancelAutoLockTimer(true);
+    bump(); // reseta o timer de inatividade do session monitor
+  }
+});
+
+/* blur/focus na janela (fallback para desktop e WebView sem visibilitychange) */
+window.addEventListener('blur', ()=>{ if(!S.locked && !_inPanicMode) _startAutoLockTimer(); });
+window.addEventListener('focus', ()=>{
+  if(_autoLockTimer || _blurActive){ _cancelAutoLockTimer(true); bump(); }
+});
+
+/* Vault scroll → top-bar elevation */
+document.getElementById('vault-scroll').addEventListener('scroll', function(){
+  document.getElementById('vault-top-bar').classList.toggle('scrolled', this.scrollTop>4);
+}, {passive:true});
+
+/* Search input events */
+document.getElementById('search-input').addEventListener('input', function(){
+  const q = this.value.toLowerCase().trim();
+  S.filterQuery = q;
+  document.getElementById('search-clear').style.display = q?'flex':'none';
+  if(_searchTimer) clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(()=>renderNotes(), 200);
+  bump();
+});
+
+/* Editor events */
+document.getElementById('editor-title').addEventListener('input', ()=>{ scheduleAutoSave(); bump(); });
+document.getElementById('editor-content').addEventListener('input', ()=>{
+  scheduleAutoSave(); _updateEditorCharCount(); bump();
+});
+document.getElementById('ttl-sel').addEventListener('change', ()=>{ scheduleAutoSave(); bump(); });
+
+/* Auth: Enter key */
+document.getElementById('auth-password').addEventListener('keydown',  e=>{ if(e.key==='Enter') handleAuth(); });
+document.getElementById('auth-password2').addEventListener('keydown', e=>{ if(e.key==='Enter') handleAuth(); });
+
+/* Toggle password visibility */
+document.getElementById('btn-toggle-visibility').addEventListener('click', ()=>{
+  const inp = document.getElementById('auth-password');
+  const svg = document.getElementById('icon-eye');
+  const isPass = inp.type==='password';
+  inp.type = isPass?'text':'password';
+  svg.innerHTML = isPass
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+});
+
+/* ════════════════════════════════════════════════════════════════════
+   BOOT SEQUENCE
+════════════════════════════════════════════════════════════════════ */
+
+/* ▼ FIX BACK BUTTON: intercepta o botão Voltar do Android (popstate).
+   Prioridade de tratamento:
+   1. Modal ativo → fecha o modal (não sai da tela)
+   2. Editor aberto → volta ao vault (não desloga)
+   3. Vault → re-empilha para evitar saída acidental
+   4. Auth → deixa o comportamento padrão (sair do app)
+*/
+window.addEventListener('popstate', (e) => {
+  bump(); // reseta o timer de inatividade
+
+  // Prioridade 1: fechar o modal mais recente ativo
+  const activeModals = [...document.querySelectorAll('.modal-backdrop.active')];
+  if(activeModals.length){
+    activeModals[activeModals.length - 1].classList.remove('active');
+    // Re-empilha a tela atual para manter o histórico consistente
+    history.pushState({gpad: App.current}, '');
+    return;
+  }
+
+  // Prioridade 2: editor → vault (salva auto-save pendente)
+  if(App.current === 'editor'){
+    closeCurrentEditor();
+    // closeCurrentEditor() chama App.navigate('vault') que já faz pushState
+    return;
+  }
+
+  // Prioridade 3: vault → re-empilha para não sair involuntariamente
+  // (o usuário precisa pressionar Voltar duas vezes rápidas para sair)
+  if(App.current === 'vault'){
+    history.pushState({gpad:'vault'}, '');
+    return;
+  }
+
+  // Prioridade 4: auth → comportamento padrão (sair / minimizar o app)
+});
+
+(async function boot(){
+  Settings.init();
+  // Inicializa o estado base do histórico para que popstate funcione corretamente
+  history.replaceState({gpad:'auth'}, '');
+  try{
+    const hasVault = await DB.vaultExists();
+    authMode = hasVault ? 'unlock' : 'create';
+    refreshAuthUI();
+  } catch(e){
+    authMode='create'; refreshAuthUI();
+    console.warn('[Nox] DB check failed:', e);
+  }
+  App.navigate('auth');
+  setTimeout(()=>document.getElementById('auth-password')?.focus(), 400);
+  console.log('%c[Nox] Motor V4 + Design Elevated Dark — Fase 2 OK ✓ (HMAC-verifier · sem MASTER_PASSPHRASE)', 'color:#D0BCFF;font-weight:bold;font-size:13px;');
+})();
+</script>
+</body>
+</html>
